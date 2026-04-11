@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 """
-Скрипт для автоматического сбора научных статей и их обработки с помощью OpenAI.
-Использует CrossRef и arXiv API для поиска релевантных статей.
-
-Использование:
-    python scripts/collect_papers.py --query "maritime autonomous collision avoidance" --max-papers 50
+Скрипт для автоматического сбора научных статей.
+Исправленная версия с устранением критических ошибок.
 """
 
 import os
@@ -13,15 +10,17 @@ import requests
 import xml.etree.ElementTree as ET
 import hashlib
 import sqlite3
+import re
 from datetime import datetime
 from typing import List, Dict, Optional
 from pathlib import Path
 import argparse
 import time
 import logging
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
-# Настройка логирования
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -31,7 +30,6 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class Paper:
-    """Класс для представления научной статьи"""
     title: str
     authors: List[str]
     abstract: str
@@ -47,25 +45,45 @@ class Paper:
             self.keywords = []
     
     def get_hash(self) -> str:
-        """Генерирует хеш для дедупликации"""
-        content = f"{self.title}_{','.join(self.authors)}".lower()
+        content = self.title.lower() + "_" + ",".join(self.authors).lower()
         return hashlib.md5(content.encode()).hexdigest()
 
 
 class CrossRefFetcher:
-    """Получение данных из CrossRef API"""
-    
     BASE_URL = "https://api.crossref.org/works"
     
     def __init__(self, email: str):
+        # ИСПРАВЛЕНИЕ #4: Валидация email
+        if not self._validate_email(email):
+            raise ValueError(f"Некорректный email: {email}")
+        
         self.email = email
-        self.session = requests.Session()
+        self.session = self._create_session_with_retries()
         self.session.headers.update({
-            'User-Agent': f'MASS-Handbook-Bot (mailto:{email})'
+            'User-Agent': 'MASS-Handbook-Bot (mailto:' + email + ')'
         })
     
+    @staticmethod
+    def _validate_email(email: str) -> bool:
+        """Валидация email адреса"""
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        return re.match(pattern, email) is not None
+    
+    @staticmethod
+    def _create_session_with_retries():
+        """Создание сессии с повторными попытками"""
+        session = requests.Session()
+        retry = Retry(
+            total=3,
+            backoff_factor=0.5,
+            status_forcelist=[429, 500, 502, 503, 504]
+        )
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
+        return session
+    
     def search(self, query: str, rows: int = 50, offset: int = 0) -> List[Paper]:
-        """Поиск статей в CrossRef"""
         params = {
             'query': query,
             'rows': rows,
@@ -84,18 +102,43 @@ class CrossRefFetcher:
                 if paper:
                     papers.append(paper)
             
-            logger.info(f"CrossRef: найдено {len(papers)} статей")
+            logger.info("CrossRef: найдено " + str(len(papers)) + " статей")
             return papers
         
         except requests.RequestException as e:
-            logger.error(f"Ошибка CrossRef: {e}")
+            logger.error("Ошибка CrossRef: " + str(e))
             return []
     
+    def fetch_by_doi(self, doi: str) -> Optional[Paper]:
+        try:
+            url = self.BASE_URL + "/" + doi
+            response = self.session.get(url, timeout=10)
+            if response.status_code == 200:
+                data = response.json()['message']
+                title = data.get('title', [''])[0] if data.get('title') else ''
+                authors = [a.get('given', '') + ' ' + a.get('family', '') 
+                          for a in data.get('author', [])]
+                
+                return Paper(
+                    title=title,
+                    authors=authors,
+                    abstract=data.get('abstract', ''),
+                    doi=data.get('DOI'),
+                    publication_date=data.get('published-online', {}).get('date-time'),
+                    source='crossref',
+                    url=data.get('URL'),
+                    keywords=data.get('subject', [])
+                )
+            else:
+                logger.warning("DOI не найден: " + doi + " (статус " + str(response.status_code) + ")")
+        except Exception as e:
+            logger.error("Ошибка при запросе DOI " + doi + ": " + str(e))
+        return None
+    
     def _parse_item(self, item: Dict) -> Optional[Paper]:
-        """Парсинг элемента из ответа CrossRef"""
         try:
             title = item.get('title', [''])[0] if item.get('title') else ''
-            authors = [f"{a.get('given', '')} {a.get('family', '')}".strip() 
+            authors = [a.get('given', '') + ' ' + a.get('family', '') 
                       for a in item.get('author', [])]
             
             return Paper(
@@ -109,19 +152,33 @@ class CrossRefFetcher:
                 keywords=item.get('keywords', [])
             )
         except Exception as e:
-            logger.warning(f"Ошибка парсинга CrossRef: {e}")
+            logger.warning("Ошибка парсинга CrossRef: " + str(e))
             return None
 
 
-class ArXivFetcher:
-    """Получение данных из arXiv API"""
-    
+class ArxivFetcher:
     BASE_URL = "http://export.arxiv.org/api/query"
     
+    def __init__(self):
+        self.session = self._create_session_with_retries()
+    
+    @staticmethod
+    def _create_session_with_retries():
+        """Создание сессии с повторными попытками"""
+        session = requests.Session()
+        retry = Retry(
+            total=3,
+            backoff_factor=0.5,
+            status_forcelist=[429, 500, 502, 503, 504]
+        )
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
+        return session
+    
     def search(self, query: str, max_results: int = 50) -> List[Paper]:
-        """Поиск препринтов в arXiv"""
         params = {
-            'search_query': f'all:{query}',
+            'search_query': 'all:' + query,
             'start': 0,
             'max_results': max_results,
             'sortBy': 'submittedDate',
@@ -129,7 +186,7 @@ class ArXivFetcher:
         }
         
         try:
-            response = requests.get(self.BASE_URL, params=params, timeout=10)
+            response = self.session.get(self.BASE_URL, params=params, timeout=10)
             response.raise_for_status()
             
             root = ET.fromstring(response.content)
@@ -140,24 +197,38 @@ class ArXivFetcher:
                 if paper:
                     papers.append(paper)
             
-            logger.info(f"arXiv: найдено {len(papers)} препринтов")
+            logger.info("arXiv: найдено " + str(len(papers)) + " препринтов")
             return papers
         
         except requests.RequestException as e:
-            logger.error(f"Ошибка arXiv: {e}")
+            logger.error("Ошибка arXiv: " + str(e))
             return []
     
-    def _parse_entry(self, entry: ET.Element) -> Optional[Paper]:
-        """Парсинг элемента из Atom ответа arXiv"""
+    def _parse_entry(self, entry):
         try:
-            ns = {'atom': 'http://www.w3.org/2005/Atom', 'arxiv': 'http://arxiv.org/schemas/atom'}
+            ns = {'atom': 'http://www.w3.org/2005/Atom'}
             
-            title = entry.find('atom:title', ns).text if entry.find('atom:title', ns) is not None else ''
-            authors = [author.find('atom:name', ns).text 
-                      for author in entry.findall('atom:author', ns)]
-            summary = entry.find('atom:summary', ns).text if entry.find('atom:summary', ns) is not None else ''
-            arxiv_id = entry.find('atom:id', ns).text.split('/abs/')[-1] if entry.find('atom:id', ns) is not None else ''
-            published = entry.find('atom:published', ns).text if entry.find('atom:published', ns) is not None else ''
+            title_elem = entry.find('atom:title', ns)
+            title = title_elem.text if title_elem is not None else ''
+            
+            # ИСПРАВЛЕНИЕ #1: Безопасный парсинг авторов
+            authors = []
+            for author in entry.findall('atom:author', ns):
+                name_elem = author.find('atom:name', ns)
+                if name_elem is not None and name_elem.text:
+                    authors.append(name_elem.text)
+            
+            summary_elem = entry.find('atom:summary', ns)
+            summary = summary_elem.text if summary_elem is not None else ''
+            
+            id_elem = entry.find('atom:id', ns)
+            if id_elem is not None and id_elem.text:
+                arxiv_id = id_elem.text.split('/abs/')[-1]
+            else:
+                arxiv_id = ''
+            
+            published_elem = entry.find('atom:published', ns)
+            published = published_elem.text if published_elem is not None else ''
             
             return Paper(
                 title=title.strip(),
@@ -166,22 +237,19 @@ class ArXivFetcher:
                 arxiv_id=arxiv_id,
                 publication_date=published,
                 source='arxiv',
-                url=f'https://arxiv.org/abs/{arxiv_id}'
+                url='https://arxiv.org/abs/' + arxiv_id
             )
         except Exception as e:
-            logger.warning(f"Ошибка парсинга arXiv: {e}")
+            logger.warning("Ошибка парсинга arXiv: " + str(e))
             return None
 
 
 class Deduplicator:
-    """Удаление дубликатов и фильтрация статей"""
-    
     def __init__(self, db_path: str = "papers.db"):
         self.db_path = db_path
         self._init_db()
     
     def _init_db(self):
-        """Инициализация базы данных"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
@@ -201,7 +269,6 @@ class Deduplicator:
         conn.close()
     
     def deduplicate(self, papers: List[Paper]) -> List[Paper]:
-        """Удаление дубликатов из списка статей"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
@@ -222,13 +289,11 @@ class Deduplicator:
         conn.commit()
         conn.close()
         
-        logger.info(f"Дедупликация: {len(papers)} -> {len(unique_papers)} уникальных")
+        logger.info("Дедупликация: " + str(len(papers)) + " -> " + str(len(unique_papers)) + " уникальных")
         return unique_papers
 
 
 class MarkdownGenerator:
-    """Генерация Markdown файлов для Docusaurus"""
-    
     TEMPLATE = """---
 sidebar_position: {position}
 tags: [{tags}]
@@ -249,7 +314,6 @@ tags: [{tags}]
 ## Ключевые выводы
 
 - Статья добавлена автоматически
-- Требуется ручная обработка для полного описания
 
 ## Оценка применимости (TRL)
 
@@ -257,16 +321,23 @@ tags: [{tags}]
 
 ## Ссылки
 
-- [Полный текст](https://doi.org/{doi})
+{links}
 """
     
     def generate(self, paper: Paper, position: int = 1) -> str:
-        """Генерация Markdown для одной статьи"""
         tags = "Navigation, Collision Avoidance"
-        authors = ", ".join(paper.authors[:3]) if paper.authors else "Unknown"
+        # ИСПРАВЛЕНИЕ #5: Фильтрация пустых авторов
+        authors = ", ".join([a.strip() for a in paper.authors[:3] if a.strip()]) if paper.authors else "Unknown"
         year = paper.publication_date[:4] if paper.publication_date else "N/A"
         
-        markdown = self.TEMPLATE.format(
+        abstract = paper.abstract
+        if len(abstract) > 500:
+            abstract = abstract[:500] + "..."
+        
+        # ИСПРАВЛЕНИЕ #2: Улучшенная обработка ссылок
+        links = self._generate_links(paper)
+        
+        return self.TEMPLATE.format(
             position=position,
             title=paper.title,
             authors=authors,
@@ -274,26 +345,45 @@ tags: [{tags}]
             source=paper.source,
             doi=paper.doi or "N/A",
             arxiv_id=paper.arxiv_id or "N/A",
-            abstract=paper.abstract[:500] + "..." if len(paper.abstract) > 500 else paper.abstract,
-            tags=tags
+            abstract=abstract,
+            tags=tags,
+            links=links
         )
-        
-        return markdown
     
-    def save_to_file(self, markdown: str, filename: str, output_dir: str = "docs/papers"):
-        """Сохранение Markdown в файл"""
-        Path(output_dir).mkdir(parents=True, exist_ok=True)
+    @staticmethod
+    def _generate_links(paper: Paper) -> str:
+        """Генерация ссылок на полный текст"""
+        links = []
         
-        filepath = Path(output_dir) / f"{filename}.md"
-        with open(filepath, 'w', encoding='utf-8') as f:
-            f.write(markdown)
+        if paper.doi and paper.doi != "N/A":
+            links.append(f"- [Полный текст на CrossRef](https://doi.org/{paper.doi})")
         
-        logger.info(f"Файл сохранен: {filepath}")
-        return filepath
+        if paper.arxiv_id and paper.arxiv_id != "N/A":
+            links.append(f"- [Препринт на arXiv](https://arxiv.org/abs/{paper.arxiv_id})")
+        
+        if paper.url and paper.url not in [paper.doi, paper.arxiv_id]:
+            links.append(f"- [Источник]({paper.url})")
+        
+        if not links:
+            links.append("- Полный текст недоступен")
+        
+        return "\n".join(links)
+    
+    def save_to_file(self, markdown: str, filename: str, output_dir: str = "docs/papers") -> Optional[Path]:
+        # ИСПРАВЛЕНИЕ #3: Обработка исключений при сохранении
+        try:
+            Path(output_dir).mkdir(parents=True, exist_ok=True)
+            filepath = Path(output_dir) / (filename + ".md")
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(markdown)
+            logger.info("Файл сохранен: " + str(filepath))
+            return filepath
+        except IOError as e:
+            logger.error(f"Ошибка при сохранении файла {filename}: {e}")
+            return None
 
 
 def main():
-    """Главная функция"""
     parser = argparse.ArgumentParser(description='Сбор научных статей для MASS Handbook')
     parser.add_argument('--query', type=str, default='maritime autonomous collision avoidance',
                        help='Поисковый запрос')
@@ -303,36 +393,78 @@ def main():
                        help='Email для CrossRef API')
     parser.add_argument('--output-dir', type=str, default='docs/papers',
                        help='Директория для сохранения статей')
+    parser.add_argument('--doi', type=str,
+                        help='Search for a specific paper by DOI')
     
     args = parser.parse_args()
+
+    if args.doi:
+        logger.info("Поиск статьи по DOI: " + args.doi)
+        search_mode = "doi"
+    else:
+        logger.info("Начало сбора статей по запросу: " + args.query)
+        search_mode = "query"
+
+    try:
+        crossref = CrossRefFetcher(args.email)
+    except ValueError as e:
+        logger.error(str(e))
+        return
     
-    logger.info(f"Начало сбора статей по запросу: '{args.query}'")
-    
-    # Инициализация компонентов
-    crossref = CrossRefFetcher(args.email)
-    arxiv = ArXivFetcher()
+    arxiv = ArxivFetcher()
     deduplicator = Deduplicator()
     generator = MarkdownGenerator()
-    
-    # Сбор данных
+
     logger.info("Этап 1: Сбор данных...")
-    crossref_papers = crossref.search(args.query, rows=args.max_papers // 2)
-    time.sleep(1)  # Задержка между запросами
-    arxiv_papers = arxiv.search(args.query, max_results=args.max_papers // 2)
-    all_papers = crossref_papers + arxiv_papers
     
-    # Дедупликация
+    if search_mode == "doi":
+        paper = crossref.fetch_by_doi(args.doi)
+        if paper:
+            all_papers = [paper]
+            logger.info("Найдена статья: " + paper.title)
+        else:
+            logger.error("Статья с DOI " + args.doi + " не найдена")
+            return
+    else:
+        crossref_papers = crossref.search(args.query, rows=args.max_papers // 2)
+        time.sleep(1)
+        arxiv_papers = arxiv.search(args.query, max_results=args.max_papers // 2)
+        all_papers = crossref_papers + arxiv_papers
+
     logger.info("Этап 2: Дедупликация...")
     unique_papers = deduplicator.deduplicate(all_papers)
-    
-    # Генерация Markdown
+
+    # ИСПРАВЛЕНИЕ #6: Проверка на пустой результат
+    if not unique_papers:
+        logger.warning("Статьи не найдены!")
+        return
+
     logger.info("Этап 3: Генерация Markdown...")
+    saved_count = 0
     for i, paper in enumerate(unique_papers[:args.max_papers], 1):
         markdown = generator.generate(paper, position=i)
-        filename = f"paper_{i:04d}_{paper.source}"
-        generator.save_to_file(markdown, filename, args.output_dir)
+        filename = "paper_" + str(i).zfill(4) + "_" + paper.source
+        if generator.save_to_file(markdown, filename, args.output_dir):
+            saved_count += 1
+
+    logger.info("Завершено! Обработано " + str(len(unique_papers)) + " статей, сохранено " + str(saved_count) + ".")
     
-    logger.info(f"Завершено! Обработано {len(unique_papers)} статей.")
+    # Логирование итогов в JSON
+    summary = {
+        "timestamp": datetime.now().isoformat(),
+        "total_papers": len(all_papers),
+        "unique_papers": len(unique_papers),
+        "saved_papers": saved_count,
+        "search_mode": search_mode,
+        "query": args.query if search_mode == "query" else args.doi
+    }
+    
+    try:
+        with open("collection_summary.json", "w") as f:
+            json.dump(summary, f, indent=2)
+        logger.info("Итоги сохранены в collection_summary.json")
+    except IOError as e:
+        logger.error(f"Ошибка при сохранении итогов: {e}")
 
 
 if __name__ == "__main__":
