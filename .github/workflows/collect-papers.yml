@@ -44,8 +44,8 @@ jobs:
           CROSSREF_EMAIL: ${{ secrets.CROSSREF_EMAIL }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          # Запускаем скрипт из корня репозитория (судя по вашему скриншоту)
-          CMD="python collect_papers_extended.py \
+          # ВАЖНО: Добавлен путь scripts/ перед файлом
+          CMD="python scripts/collect_papers_extended.py \
             --query \"${{ github.event.inputs.query || 'maritime autonomous collision avoidance' }}\" \
             --max-papers ${{ github.event.inputs.max_papers || '20' }} \
             --email \"$CROSSREF_EMAIL\" \
