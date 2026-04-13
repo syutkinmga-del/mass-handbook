@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-04-13T12:37:02.175109",
+  "total_papers": 20,
+  "unique_papers": 20,
+  "saved_papers": 20,
+  "sources": [
+    "crossref",
+    "arxiv"
+  ],
+  "query": "maritime autonomous collision avoidance",
+  "openai_enabled": true
+}
