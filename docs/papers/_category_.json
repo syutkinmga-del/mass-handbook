@@ -1,0 +1,8 @@
+{
+  "label": "Статьи",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Каталог научных статей по автономным морским судам"
+  }
+}
