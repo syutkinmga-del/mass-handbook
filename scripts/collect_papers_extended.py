@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Расширенный скрипт сбора и обработки научных статей с поддержкой OpenAI.
-Версия с безопасностью для MDX парсинга Docusaurus.
+Скрипт сбора и обработки научных статей.
+Исправленная версия с экранированием MDX и корректным синтаксисом.
 """
 
 import os
@@ -80,7 +80,9 @@ def generate_markdown_safe(paper_data: Dict, output_path: str) -> bool:
         frontmatter = "---\n"
         for key, value in frontmatter_data.items():
             if isinstance(value, list):
-                frontmatter += f'{key}: [{", ".join(f\'"{item}\'' for item in value)}]\n'
+                # ИСПРАВЛЕНИЕ: корректный синтаксис для списка в frontmatter
+                items_str = ", ".join(f'"{item}"' for item in value)
+                frontmatter += f'{key}: [{items_str}]\n'
             else:
                 frontmatter += f'{key}: {value}\n'
         frontmatter += "---\n\n"
@@ -239,6 +241,7 @@ def main():
     parser.add_argument('--max-papers', type=int, default=20, help='Максимальное количество статей')
     parser.add_argument('--email', required=True, help='Email для CrossRef API')
     parser.add_argument('--output-dir', default='docs/papers', help='Директория для сохранения')
+    parser.add_argument('--use-openai', action='store_true', help='Использовать OpenAI для обработки')
     
     args = parser.parse_args()
     
@@ -269,3 +272,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
