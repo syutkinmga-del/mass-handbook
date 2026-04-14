@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
 Скрипт сбора и обработки научных статей.
-Исправленная версия с экранированием MDX и корректным синтаксисом.
+Поддерживает поиск по ключевым словам и прямую загрузку по DOI.
 """
-
 import os
 import json
 import sqlite3
@@ -22,7 +21,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-
 def escape_mdx_content(text: str) -> str:
     """
     Экранирует специальные символы для безопасности MDX парсинга в Docusaurus.
@@ -39,7 +37,6 @@ def escape_mdx_content(text: str) -> str:
     
     return text
 
-
 def sanitize_frontmatter(data: Dict) -> Dict:
     """
     Очищает frontmatter от проблемных символов.
@@ -48,47 +45,41 @@ def sanitize_frontmatter(data: Dict) -> Dict:
     for key, value in data.items():
         if isinstance(value, str):
             # Экранируем кавычки в строках
-            value = value.replace('"', '\\"')
-            sanitized[key] = value
+            sanitized[key] = value.replace('"', '\\"').replace("'", "\\'")
         elif isinstance(value, list):
-            # Очищаем список (теги и т.д.)
-            sanitized[key] = [str(item).replace('"', '\\"') for item in value]
+            sanitized[key] = [str(v).replace('"', '\\"').replace("'", "\\'") for v in value]
         else:
             sanitized[key] = value
     return sanitized
 
-
 def generate_markdown_safe(paper_data: Dict, output_path: str) -> bool:
     """
-    Генерирует безопасный для MDX Markdown файл.
+    Генерирует Markdown файл с безопасным экранированием MDX.
     """
     try:
-        # Экранируем содержимое
-        title = escape_mdx_content(paper_data.get('title', 'Unknown'))
+        # Подготовка безопасных данных для frontmatter
+        safe_data = sanitize_frontmatter(paper_data)
+        
+        # Экранирование контента
         abstract_en = escape_mdx_content(paper_data.get('abstract_en', ''))
         abstract_ru = escape_mdx_content(paper_data.get('abstract_ru', ''))
         key_findings = escape_mdx_content(paper_data.get('key_findings', ''))
         
-        # Очищаем frontmatter
-        frontmatter_data = {
-            'sidebar_position': paper_data.get('sidebar_position', 1),
-            'tags': paper_data.get('tags', [])
-        }
-        frontmatter_data = sanitize_frontmatter(frontmatter_data)
-        
-        # Генерируем frontmatter
+        # Формирование frontmatter
         frontmatter = "---\n"
-        for key, value in frontmatter_data.items():
+        for key, value in safe_data.items():
+            if key in ['abstract_en', 'abstract_ru', 'key_findings']:
+                continue
             if isinstance(value, list):
-                # ИСПРАВЛЕНИЕ: корректный синтаксис для списка в frontmatter
+                # Исправленная генерация списка: кавычки внутри f-строки
                 items_str = ", ".join(f'"{item}"' for item in value)
                 frontmatter += f'{key}: [{items_str}]\n'
             else:
-                frontmatter += f'{key}: {value}\n'
+                frontmatter += f'{key}: "{value}"\n'
         frontmatter += "---\n\n"
         
-        # Генерируем содержимое
-        content = f"""# {title}
+        # Формирование контента
+        content = f"""# {escape_mdx_content(paper_data.get('title', 'Unknown'))}
 
 **Авторы:** {escape_mdx_content(paper_data.get('authors', 'Unknown'))}
 **Год:** {paper_data.get('year', 'N/A')}
@@ -118,36 +109,79 @@ def generate_markdown_safe(paper_data: Dict, output_path: str) -> bool:
         
         # Добавляем ссылки
         links = []
-        if paper_data.get('doi'):
+        if paper_data.get('doi') and paper_data.get('doi') != 'N/A':
             links.append(f"- [Полный текст на CrossRef](https://doi.org/{paper_data['doi']})")
-        if paper_data.get('url'):
+        if paper_data.get('url') and paper_data.get('url') != 'N/A':
             links.append(f"- [Источник]({paper_data['url']})")
-        if paper_data.get('arxiv_id'):
+        if paper_data.get('arxiv_id') and paper_data.get('arxiv_id') != 'N/A':
             links.append(f"- [arXiv](https://arxiv.org/abs/{paper_data['arxiv_id']})")
         
         if links:
             content += "\n".join(links)
         else:
-            content += "- [Источник](https://crossref.org/)"
-        
-        # Записываем файл
-        full_content = frontmatter + content
-        
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            content += "- _Ссылки недоступны_"
+            
+        # Запись в файл
         with open(output_path, 'w', encoding='utf-8') as f:
-            f.write(full_content)
-        
-        logger.info(f"✓ Создан файл: {output_path}")
+            f.write(frontmatter + content)
+            
         return True
         
     except Exception as e:
         logger.error(f"✗ Ошибка при создании файла {output_path}: {e}")
         return False
 
+def is_doi(query: str) -> bool:
+    """
+    Проверяет, является ли строка DOI.
+    DOI обычно начинается с '10.' и содержит слэш.
+    """
+    return bool(re.match(r'^10\.\d{4,9}/[-._;()/:A-Z0-9]+$', query, re.IGNORECASE))
+
+def fetch_paper_by_doi(doi: str, email: str) -> List[Dict]:
+    """
+    Получает конкретную статью из CrossRef по DOI.
+    """
+    url = f"https://api.crossref.org/works/{doi}"
+    
+    params = {
+        'mailto': email
+    }
+    
+    try:
+        logger.info(f"Запрос статьи по DOI: {doi}")
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        
+        item = data.get('message', {})
+        
+        if not item:
+            logger.warning(f"Статья с DOI {doi} не найдена")
+            return []
+            
+        paper = {
+            'title': item.get('title', ['Unknown'])[0],
+            'authors': ', '.join([f"{a.get('given', '')} {a.get('family', '')}".strip() 
+                                for a in item.get('author', [])[:3]]) or 'Unknown',
+            'year': item.get('published-online', {}).get('date-parts', [[None]])[0][0] or 'N/A',
+            'doi': item.get('DOI', 'N/A'),
+            'abstract_en': item.get('abstract', ''),
+            'source': 'crossref',
+            'url': item.get('URL', ''),
+            'arxiv_id': 'N/A'
+        }
+        
+        logger.info(f"✓ Успешно получена статья по DOI: {doi}")
+        return [paper]
+        
+    except Exception as e:
+        logger.error(f"✗ Ошибка при получении статьи по DOI {doi}: {e}")
+        return []
 
 def fetch_papers_crossref(query: str, email: str, max_papers: int = 20) -> List[Dict]:
     """
-    Получает статьи из CrossRef API.
+    Получает статьи из CrossRef API по поисковому запросу.
     """
     papers = []
     url = "https://api.crossref.org/works"
@@ -159,6 +193,7 @@ def fetch_papers_crossref(query: str, email: str, max_papers: int = 20) -> List[
     }
     
     try:
+        logger.info(f"Поиск в CrossRef по запросу: '{query}'")
         response = requests.get(url, params=params, timeout=10)
         response.raise_for_status()
         data = response.json()
@@ -184,7 +219,6 @@ def fetch_papers_crossref(query: str, email: str, max_papers: int = 20) -> List[
     
     return papers
 
-
 def fetch_papers_arxiv(query: str, max_papers: int = 20) -> List[Dict]:
     """
     Получает статьи из arXiv API.
@@ -195,6 +229,7 @@ def fetch_papers_arxiv(query: str, max_papers: int = 20) -> List[Dict]:
     search_query = f"search_query=all:{query}&start=0&max_results={max_papers}&sortBy=submittedDate&sortOrder=descending"
     
     try:
+        logger.info(f"Поиск в arXiv по запросу: '{query}'")
         response = requests.get(f"{url}?{search_query}", timeout=10)
         response.raise_for_status()
         
@@ -229,7 +264,6 @@ def fetch_papers_arxiv(query: str, max_papers: int = 20) -> List[Dict]:
     
     return papers
 
-
 def main():
     """
     Главная функция.
@@ -237,7 +271,7 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(description='Сбор и обработка научных статей')
-    parser.add_argument('--query', default='maritime autonomous collision avoidance', help='Поисковый запрос')
+    parser.add_argument('--query', default='maritime autonomous collision avoidance', help='Поисковый запрос (ключевые слова или DOI)')
     parser.add_argument('--max-papers', type=int, default=20, help='Максимальное количество статей')
     parser.add_argument('--email', required=True, help='Email для CrossRef API')
     parser.add_argument('--output-dir', default='docs/papers', help='Директория для сохранения')
@@ -250,9 +284,24 @@ def main():
     
     # Собираем статьи
     all_papers = []
-    all_papers.extend(fetch_papers_crossref(args.query, args.email, args.max_papers // 2))
-    all_papers.extend(fetch_papers_arxiv(args.query, args.max_papers // 2))
     
+    # Очистка запроса от лишних пробелов
+    query = args.query.strip()
+    
+    # Проверяем, является ли запрос DOI
+    if is_doi(query):
+        logger.info(f"Обнаружен DOI: {query}")
+        all_papers.extend(fetch_paper_by_doi(query, args.email))
+    else:
+        # Если не DOI, ищем по ключевым словам
+        logger.info(f"Поиск по ключевым словам: {query}")
+        all_papers.extend(fetch_papers_crossref(query, args.email, args.max_papers // 2))
+        all_papers.extend(fetch_papers_arxiv(query, args.max_papers // 2))
+    
+    if not all_papers:
+        logger.warning("Статьи не найдены. Проверьте запрос.")
+        return
+        
     # Генерируем Markdown файлы
     for idx, paper in enumerate(all_papers, 1):
         paper['sidebar_position'] = idx
@@ -269,7 +318,7 @@ def main():
     logger.info(f"\n✓ Обработано {len(all_papers)} статей")
     logger.info(f"✓ Файлы сохранены в {args.output_dir}")
 
-
 if __name__ == '__main__':
     main()
+
 
