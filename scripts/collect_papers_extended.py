@@ -226,7 +226,13 @@ def fetch_papers_arxiv(query: str, max_papers: int = 20) -> List[Dict]:
     papers = []
     url = "http://export.arxiv.org/api/query"
     
-    search_query = f"search_query=all:{query}&start=0&max_results={max_papers}&sortBy=submittedDate&sortOrder=descending"
+    # arXiv API требует особого форматирования для длинных запросов
+    # Заменяем пробелы на +AND+ для строгого поиска
+    arxiv_query = query.replace(" ", "+AND+")
+    
+    # Для arXiv лучше искать в абстрактах (abs) или названиях (ti), а не везде (all)
+    # Если запрос длинный, all часто возвращает мусор
+    search_query = f"search_query=abs:{arxiv_query}&start=0&max_results={max_papers}&sortBy=submittedDate&sortOrder=descending"
     
     try:
         logger.info(f"Поиск в arXiv по запросу: '{query}'")
@@ -285,8 +291,9 @@ def main():
     # Собираем статьи
     all_papers = []
     
-    # Очистка запроса от лишних пробелов
-    query = args.query.strip()
+    # Очистка запроса от лишних пробелов и переносов строк
+    # Заменяем переносы строк на пробелы, удаляем лишние пробелы
+    query = " ".join(args.query.replace("\n", " ").replace("\r", " ").split())
     
     # Проверяем, является ли запрос DOI
     if is_doi(query):
@@ -320,5 +327,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
 
