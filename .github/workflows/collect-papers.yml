@@ -28,7 +28,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      
+      - name: Clean old papers
+        run: |
+          echo "Removing old paper markdown files..."
+          rm -f docs/papers/paper_*.md
+          echo "Old files removed. Current contents of docs/papers/:"
+          ls -la docs/papers/
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
