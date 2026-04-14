@@ -67,6 +67,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "MASS Handbook Bot"
-          git add docs/papers/ papers.db collection_summary.json || true
+          git add docs/papers/ collection_summary.json || true
           git commit -m "Auto: Add new processed papers $(date +%Y-%m-%d)" || echo "No changes to commit"
           git push
