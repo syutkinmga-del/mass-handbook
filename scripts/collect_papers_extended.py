@@ -2,6 +2,7 @@
 """
 Скрипт сбора и обработки научных статей.
 Поддерживает поиск по ключевым словам и прямую загрузку по DOI.
+Накапливает статьи, не перезаписывая существующие.
 """
 import os
 import json
@@ -13,6 +14,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional, Dict, List
 import re
+import glob
 
 # Настройка логирования
 logging.basicConfig(
@@ -52,6 +54,56 @@ def sanitize_frontmatter(data: Dict) -> Dict:
             sanitized[key] = value
     return sanitized
 
+def get_existing_dois_and_arxiv_ids(output_dir: str) -> tuple[set, set]:
+    """
+    Читает все существующие markdown файлы и извлекает из них DOI и arXiv ID,
+    чтобы избежать дублирования статей.
+    """
+    existing_dois = set()
+    existing_arxiv_ids = set()
+    
+    if not os.path.exists(output_dir):
+        return existing_dois, existing_arxiv_ids
+        
+    for filepath in glob.glob(os.path.join(output_dir, "paper_*.md")):
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                content = f.read()
+                
+                # Ищем DOI
+                doi_match = re.search(r'^doi:\s*"?([^"\n]+)"?', content, re.MULTILINE)
+                if doi_match and doi_match.group(1) != 'N/A':
+                    existing_dois.add(doi_match.group(1).strip())
+                    
+                # Ищем arXiv ID
+                arxiv_match = re.search(r'^arxiv_id:\s*"?([^"\n]+)"?', content, re.MULTILINE)
+                if arxiv_match and arxiv_match.group(1) != 'N/A':
+                    existing_arxiv_ids.add(arxiv_match.group(1).strip())
+        except Exception as e:
+            logger.warning(f"Не удалось прочитать файл {filepath} для проверки дубликатов: {e}")
+            
+    return existing_dois, existing_arxiv_ids
+
+def get_next_paper_id(output_dir: str) -> int:
+    """
+    Находит следующий доступный номер для файла статьи.
+    """
+    max_id = 0
+    
+    if not os.path.exists(output_dir):
+        return 1
+        
+    for filepath in glob.glob(os.path.join(output_dir, "paper_*.md")):
+        filename = os.path.basename(filepath)
+        # Извлекаем число из имени файла paper_XXXX_source.md
+        match = re.search(r'paper_(\d+)_', filename)
+        if match:
+            current_id = int(match.group(1))
+            if current_id > max_id:
+                max_id = current_id
+                
+    return max_id + 1
+
 def generate_markdown_safe(paper_data: Dict, output_path: str) -> bool:
     """
     Генерирует Markdown файл с безопасным экранированием MDX.
@@ -71,7 +123,6 @@ def generate_markdown_safe(paper_data: Dict, output_path: str) -> bool:
             if key in ['abstract_en', 'abstract_ru', 'key_findings']:
                 continue
             if isinstance(value, list):
-                # Исправленная генерация списка: кавычки внутри f-строки
                 items_str = ", ".join(f'"{item}"' for item in value)
                 frontmatter += f'{key}: [{items_str}]\n'
             else:
@@ -110,11 +161,11 @@ def generate_markdown_safe(paper_data: Dict, output_path: str) -> bool:
         # Добавляем ссылки
         links = []
         if paper_data.get('doi') and paper_data.get('doi') != 'N/A':
-            links.append(f"- [Полный текст на CrossRef](https://doi.org/{paper_data['doi']})")
+            links.append(f"- [Полный текст на CrossRef](https://doi.org/{paper_data['doi']} )")
         if paper_data.get('url') and paper_data.get('url') != 'N/A':
             links.append(f"- [Источник]({paper_data['url']})")
         if paper_data.get('arxiv_id') and paper_data.get('arxiv_id') != 'N/A':
-            links.append(f"- [arXiv](https://arxiv.org/abs/{paper_data['arxiv_id']})")
+            links.append(f"- [arXiv](https://arxiv.org/abs/{paper_data['arxiv_id']} )")
         
         if links:
             content += "\n".join(links)
@@ -134,7 +185,6 @@ def generate_markdown_safe(paper_data: Dict, output_path: str) -> bool:
 def is_doi(query: str) -> bool:
     """
     Проверяет, является ли строка DOI.
-    DOI обычно начинается с '10.' и содержит слэш.
     """
     return bool(re.match(r'^10\.\d{4,9}/[-._;()/:A-Z0-9]+$', query, re.IGNORECASE))
 
@@ -149,7 +199,7 @@ def fetch_paper_by_doi(doi: str, email: str) -> List[Dict]:
     }
     
     try:
-        logger.info(f"Запрос статьи по DOI: {doi}")
+        logger.info(f"Запрос статьи по DOI: {doi}" )
         response = requests.get(url, params=params, timeout=10)
         response.raise_for_status()
         data = response.json()
@@ -188,7 +238,7 @@ def fetch_papers_crossref(query: str, email: str, max_papers: int = 20) -> List[
     
     params = {
         'query': query,
-        'rows': min(max_papers, 100),
+        'rows': min(max_papers, 100 ),
         'mailto': email
     }
     
@@ -226,12 +276,7 @@ def fetch_papers_arxiv(query: str, max_papers: int = 20) -> List[Dict]:
     papers = []
     url = "http://export.arxiv.org/api/query"
     
-    # arXiv API требует особого форматирования для длинных запросов
-    # Заменяем пробелы на +AND+ для строгого поиска
-    arxiv_query = query.replace(" ", "+AND+")
-    
-    # Для arXiv лучше искать в абстрактах (abs) или названиях (ti), а не везде (all)
-    # Если запрос длинный, all часто возвращает мусор
+    arxiv_query = query.replace(" ", "+AND+" )
     search_query = f"search_query=abs:{arxiv_query}&start=0&max_results={max_papers}&sortBy=submittedDate&sortOrder=descending"
     
     try:
@@ -242,18 +287,18 @@ def fetch_papers_arxiv(query: str, max_papers: int = 20) -> List[Dict]:
         import xml.etree.ElementTree as ET
         root = ET.fromstring(response.content)
         
-        for entry in root.findall('{http://www.w3.org/2005/Atom}entry'):
-            title_elem = entry.find('{http://www.w3.org/2005/Atom}title')
-            authors_elems = entry.findall('{http://www.w3.org/2005/Atom}author')
-            summary_elem = entry.find('{http://www.w3.org/2005/Atom}summary')
-            arxiv_id_elem = entry.find('{http://www.w3.org/2005/Atom}id')
-            published_elem = entry.find('{http://www.w3.org/2005/Atom}published')
+        for entry in root.findall('{http://www.w3.org/2005/Atom}entry' ):
+            title_elem = entry.find('{http://www.w3.org/2005/Atom}title' )
+            authors_elems = entry.findall('{http://www.w3.org/2005/Atom}author' )
+            summary_elem = entry.find('{http://www.w3.org/2005/Atom}summary' )
+            arxiv_id_elem = entry.find('{http://www.w3.org/2005/Atom}id' )
+            published_elem = entry.find('{http://www.w3.org/2005/Atom}published' )
             
             paper = {
                 'title': title_elem.text if title_elem is not None else 'Unknown',
-                'authors': ', '.join([author.find('{http://www.w3.org/2005/Atom}name').text 
+                'authors': ', '.join([author.find('{http://www.w3.org/2005/Atom}name' ).text 
                                     for author in authors_elems[:3] 
-                                    if author.find('{http://www.w3.org/2005/Atom}name') is not None]),
+                                    if author.find('{http://www.w3.org/2005/Atom}name' ) is not None]),
                 'year': published_elem.text.split('-')[0] if published_elem is not None else 'N/A',
                 'doi': 'N/A',
                 'abstract_en': summary_elem.text if summary_elem is not None else '',
@@ -291,16 +336,12 @@ def main():
     # Собираем статьи
     all_papers = []
     
-    # Очистка запроса от лишних пробелов и переносов строк
-    # Заменяем переносы строк на пробелы, удаляем лишние пробелы
     query = " ".join(args.query.replace("\n", " ").replace("\r", " ").split())
     
-    # Проверяем, является ли запрос DOI
     if is_doi(query):
         logger.info(f"Обнаружен DOI: {query}")
         all_papers.extend(fetch_paper_by_doi(query, args.email))
     else:
-        # Если не DOI, ищем по ключевым словам
         logger.info(f"Поиск по ключевым словам: {query}")
         all_papers.extend(fetch_papers_crossref(query, args.email, args.max_papers // 2))
         all_papers.extend(fetch_papers_arxiv(query, args.max_papers // 2))
@@ -309,20 +350,56 @@ def main():
         logger.warning("Статьи не найдены. Проверьте запрос.")
         return
         
-    # Генерируем Markdown файлы
-    for idx, paper in enumerate(all_papers, 1):
-        paper['sidebar_position'] = idx
+    # Получаем уже существующие DOI и arXiv ID, чтобы не добавлять дубликаты
+    existing_dois, existing_arxiv_ids = get_existing_dois_and_arxiv_ids(args.output_dir)
+    logger.info(f"Найдено {len(existing_dois)} существующих DOI и {len(existing_arxiv_ids)} arXiv ID в базе")
+    
+    # Получаем следующий свободный номер для файла
+    next_id = get_next_paper_id(args.output_dir)
+    logger.info(f"Новые статьи будут нумероваться начиная с {next_id}")
+    
+    # Фильтруем дубликаты и генерируем Markdown файлы
+    added_count = 0
+    skipped_count = 0
+    
+    for paper in all_papers:
+        # Проверка на дубликаты
+        doi = paper.get('doi', 'N/A')
+        arxiv_id = paper.get('arxiv_id', 'N/A')
+        
+        if doi != 'N/A' and doi in existing_dois:
+            logger.info(f"Пропуск дубликата (DOI уже существует): {doi}")
+            skipped_count += 1
+            continue
+            
+        if arxiv_id != 'N/A' and arxiv_id in existing_arxiv_ids:
+            logger.info(f"Пропуск дубликата (arXiv ID уже существует): {arxiv_id}")
+            skipped_count += 1
+            continue
+            
+        # Добавляем в базу существующих (на случай дубликатов в самом поисковом запросе)
+        if doi != 'N/A':
+            existing_dois.add(doi)
+        if arxiv_id != 'N/A':
+            existing_arxiv_ids.add(arxiv_id)
+            
+        # Настройка метаданных
+        paper['sidebar_position'] = next_id
         paper['tags'] = ['Research', 'Maritime', 'Autonomous']
         paper['trl_level'] = 3
         paper['trl_description'] = 'Экспериментальное подтверждение концепции'
         
         source_prefix = paper['source'][:3].upper()
-        filename = f"paper_{idx:04d}_{source_prefix.lower()}.md"
+        filename = f"paper_{next_id:04d}_{source_prefix.lower()}.md"
         output_path = os.path.join(args.output_dir, filename)
         
-        generate_markdown_safe(paper, output_path)
+        if generate_markdown_safe(paper, output_path):
+            next_id += 1
+            added_count += 1
     
-    logger.info(f"\n✓ Обработано {len(all_papers)} статей")
+    logger.info(f"\n✓ Найдено всего: {len(all_papers)} статей")
+    logger.info(f"✓ Пропущено дубликатов: {skipped_count}")
+    logger.info(f"✓ Успешно добавлено новых: {added_count}")
     logger.info(f"✓ Файлы сохранены в {args.output_dir}")
 
 if __name__ == '__main__':
