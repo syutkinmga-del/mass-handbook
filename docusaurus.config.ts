@@ -44,23 +44,9 @@ onBrokenMarkdownLinks: 'warn',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/your-org/mass-handbook/tree/main/',
+            'https://github.com/syutkinmga-del/mass-handbook/tree/main/',
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/your-org/mass-handbook/tree/main/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false, // Disable blog for now
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -89,9 +75,8 @@ onBrokenMarkdownLinks: 'warn',
         },
         {to: '/docs/papers', label: 'Статьи', position: 'left'},
         {to: '/docs/glossary', label: 'Глоссарий', position: 'left'},
-        {to: '/blog', label: 'Блог', position: 'left'},
         {
-          href: 'https://github.com/your-org/mass-handbook',
+          href: 'https://github.com/syutkinmga-del/mass-handbook',
           label: 'GitHub',
           position: 'right',
         },
@@ -131,11 +116,7 @@ onBrokenMarkdownLinks: 'warn',
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/your-org/mass-handbook',
-            },
-            {
-              label: 'Блог',
-              to: '/blog',
+              href: 'https://github.com/syutkinmga-del/mass-handbook',
             },
           ],
         },
