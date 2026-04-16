@@ -34,6 +34,27 @@
   background: var(--ifm-color-danger-dark);
 }
 
+.categoriesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.category {
+  background: var(--ifm-color-emphasis-50);
+  padding: 15px;
+  border-radius: 6px;
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+.categoryTitle {
+  margin: 0 0 12px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+}
+
 .tagContainer {
   display: flex;
   flex-wrap: wrap;

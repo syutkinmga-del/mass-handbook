@@ -7,7 +7,7 @@ source: "crossref"
 url: "https://doi.org/10.3940/rina.as.2022.09"
 arxiv_id: "N/A"
 sidebar_position: "5"
-tags: ["Collision Avoidance", "Compliance", "Genetic Algorithm", "MASS", "Maritime", "Navigation", "Research", "Safety", "Vessel"]
+tags: ["Collision Avoidance", "Compliance", "Genetic Algorithm", "MASS", "Safety", "User Interface"]
 trl_level: "3"
 trl_description: "Экспериментальное подтверждение концепции"
 ---

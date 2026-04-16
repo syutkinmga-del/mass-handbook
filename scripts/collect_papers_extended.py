@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 # Словарь ключевых слов для автоматического тегирования
 TAG_KEYWORDS = {
-    # Методологические подходы
+    # ===== АЛГОРИТМЫ И МОДЕЛИ =====
     'Dynamic Window Approach': ['dynamic window', 'dwa', 'velocity obstacle'],
     'Deep Reinforcement Learning': ['deep reinforcement learning', 'drl', 'q-learning', 'policy gradient'],
     'Model Predictive Control': ['model predictive control', 'mpc', 'predictive'],
@@ -35,32 +35,65 @@ TAG_KEYWORDS = {
     'Fuzzy Logic': ['fuzzy', 'fuzzy inference', 'fuzzy logic'],
     'Genetic Algorithm': ['genetic algorithm', 'evolutionary', 'ga'],
     'Particle Swarm': ['particle swarm', 'pso'],
+    'Reinforcement Learning': ['reinforcement learning', 'reward', 'markov'],
+    'Neural Networks': ['neural network', 'cnn', 'lstm', 'rnn', 'deep learning'],
+    'Optimization Algorithm': ['optimization', 'optimal control', 'convex optimization'],
     
-    # Области применения
-    'Collision Avoidance': ['collision avoidance', 'collision detection', 'avoid collision', 'anti-collision'],
-    'Navigation': ['navigation', 'autonomous navigation', 'maritime navigation'],
-    'Sensor Processing': ['sensor', 'lidar', 'radar', 'camera', 'perception'],
-    'Situational Awareness': ['situational awareness', 'situation awareness', 'awareness'],
-    'Knowledge Representation': ['knowledge map', 'knowledge graph', 'ontology', 'semantic'],
-    'Decision Making': ['decision making', 'decision support', 'decision system'],
+    # ===== АРХИТЕКТУРА MASS - PERCEPTION (ВОСПРИЯТИЕ) =====
+    'Perception': ['perception', 'sensor', 'lidar', 'radar', 'camera', 'sonar', 'detection', 'object detection'],
+    'Sensor Fusion': ['sensor fusion', 'data fusion', 'multi-sensor'],
+    'Image Processing': ['image processing', 'computer vision', 'visual', 'video processing'],
     
-    # Нормативные и регуляторные аспекты
-    'COLREGs': ['colregs', 'international regulations', 'collision prevention', 'rules of the road'],
-    'IMO': ['imo', 'international maritime', 'maritime regulations'],
-    'Safety': ['safety', 'risk assessment', 'hazard', 'safety analysis'],
-    'Compliance': ['compliance', 'regulatory', 'regulation'],
+    # ===== АРХИТЕКТУРА MASS - DECISION MAKING (ПРИНЯТИЕ РЕШЕНИЙ) =====
+    'Decision Making': ['decision making', 'decision support', 'decision system', 'planning'],
+    'Behavior Planning': ['behavior planning', 'behavior tree', 'state machine'],
+    'Trajectory Planning': ['trajectory planning', 'motion planning', 'path planning'],
     
-    # Типы судов и систем
+    # ===== АРХИТЕКТУРА MASS - CONTROL (УПРАВЛЕНИЕ) =====
+    'Control System': ['control system', 'controller', 'autopilot', 'steering', 'propulsion'],
+    'Adaptive Control': ['adaptive control', 'pid controller', 'feedback control'],
+    'Nonlinear Control': ['nonlinear control', 'robust control', 'sliding mode'],
+    
+    # ===== АРХИТЕКТУРА MASS - COLLISION AVOIDANCE (ИЗБЕЖАНИЕ СТОЛКНОВЕНИЙ) =====
+    'Collision Avoidance': ['collision avoidance', 'collision detection', 'avoid collision', 'anti-collision', 'cpa', 'tcpa'],
+    'Obstacle Avoidance': ['obstacle avoidance', 'obstacle detection', 'avoidance maneuver'],
+    'COLREGs': ['colregs', 'international regulations', 'collision prevention', 'rules of the road', 'imca'],
+    
+    # ===== АРХИТЕКТУРА MASS - SITUATIONAL AWARENESS (СИТУАЦИОННАЯ ОСВЕДОМЛЕННОСТЬ) =====
+    'Situational Awareness': ['situational awareness', 'situation awareness', 'awareness', 'maritime awareness'],
+    'Knowledge Representation': ['knowledge map', 'knowledge graph', 'ontology', 'semantic', 'knowledge base'],
+    'Environment Modeling': ['environment model', 'world model', 'scene understanding'],
+    
+    # ===== АРХИТЕКТУРА MASS - COMMUNICATION & DATA MANAGEMENT (КОММУНИКАЦИЯ И УПРАВЛЕНИЕ ДАННЫМИ) =====
+    'Communication': ['communication', 'network', 'wireless', 'connectivity', 'v2x', 'maritime communication'],
+    'Data Management': ['data management', 'database', 'data storage', 'data processing'],
+    'Cloud Computing': ['cloud', 'edge computing', 'fog computing', 'distributed'],
+    
+    # ===== АРХИТЕКТУРА MASS - HUMAN MACHINE INTERACTION (ВЗАИМОДЕЙСТВИЕ ЧЕЛОВЕКА И МАШИНЫ) =====
+    'Human Machine Interaction': ['human machine interaction', 'hmi', 'human interaction', 'user interface', 'teleoperation'],
+    'User Interface': ['user interface', 'ui', 'dashboard', 'visualization'],
+    'Remote Control': ['remote control', 'teleoperation', 'remote operation'],
+    
+    # ===== АРХИТЕКТУРА MASS - CYBERSECURITY (КИБЕРБЕЗОПАСНОСТЬ) =====
+    'Cybersecurity': ['cybersecurity', 'cyber security', 'security', 'encryption', 'authentication', 'intrusion detection'],
+    'Network Security': ['network security', 'firewall', 'ddos', 'attack'],
+    'Data Protection': ['data protection', 'privacy', 'confidentiality'],
+    
+    # ===== АРХИТЕКТУРА MASS - SYSTEM HEALTH MANAGEMENT (УПРАВЛЕНИЕ ЗДОРОВЬЕМ СИСТЕМЫ) =====
+    'System Health Management': ['system health', 'health management', 'diagnostics', 'fault detection', 'prognostics'],
+    'Fault Tolerance': ['fault tolerance', 'redundancy', 'reliability', 'availability'],
+    'Maintenance': ['maintenance', 'predictive maintenance', 'condition monitoring'],
+    
+    # ===== АРХИТЕКТУРА MASS - DIGITAL TWIN SUPPORT (ПОДДЕРЖКА ЦИФРОВЫХ ДВОЙНИКОВ) =====
+    'Digital Twin': ['digital twin', 'virtual ship', 'simulation', 'virtual environment', 'digital model'],
+    'Simulation': ['simulation', 'simulator', 'virtual environment', 'digital twin'],
+    'Testing': ['testing', 'validation', 'verification', 'experiment', 'benchmark'],
+    
+    # ===== COMPLIANCE & REGULATORY LAYER (СООТВЕТСТВИЕ И НОРМАТИВНЫЙ СЛОЙ) =====
+    'Safety': ['safety', 'risk assessment', 'hazard', 'safety analysis', 'fail-safe'],
+    'Compliance': ['compliance', 'regulatory', 'regulation', 'standard'],
+    'IMO': ['imo', 'international maritime', 'maritime regulations', 'maritime law'],
     'MASS': ['mass', 'maritime autonomous', 'autonomous surface ship'],
-    'ASV': ['asv', 'autonomous surface vehicle'],
-    'USV': ['usv', 'unmanned surface vehicle'],
-    'Vessel': ['vessel', 'ship', 'boat', 'maritime'],
-    
-    # Другие аспекты
-    'Simulation': ['simulation', 'simulator', 'virtual environment'],
-    'Real-time': ['real-time', 'real time', 'online'],
-    'Optimization': ['optimization', 'optimal', 'efficiency'],
-    'Testing': ['testing', 'validation', 'verification', 'experiment'],
 }
 
 def escape_mdx_content(text: str) -> str:
@@ -97,7 +130,7 @@ def sanitize_frontmatter(data: Dict) -> Dict:
 def generate_tags_from_content(paper_data: Dict) -> List[str]:
     """
     Автоматически генерирует теги на основе содержимого статьи.
-    Анализирует заголовок, авторов и аннотацию.
+    Анализирует заголовок и аннотацию.
     """
     tags = set()
     
@@ -111,13 +144,9 @@ def generate_tags_from_content(paper_data: Dict) -> List[str]:
                 tags.add(tag)
                 break  # Нашли совпадение для этого тега, переходим к следующему
     
-    # Добавляем базовые теги
-    tags.add('Research')
-    tags.add('Maritime')
-    
-    # Если теги не найдены, добавляем общий тег
-    if len(tags) <= 2:
-        tags.add('Autonomous')
+    # Если теги не найдены, добавляем базовый тег
+    if len(tags) == 0:
+        tags.add('MASS')
     
     return sorted(list(tags))
 
@@ -474,4 +503,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

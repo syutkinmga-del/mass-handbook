@@ -7,7 +7,7 @@ source: "crossref"
 url: "https://doi.org/10.1016/j.oceaneng.2024.118882"
 arxiv_id: "N/A"
 sidebar_position: "10"
-tags: ["Dynamic Window Approach", "Knowledge Representation", "MASS", "Maritime", "Path Planning", "Research", "Vessel"]
+tags: ["Decision Making", "Dynamic Window Approach", "Knowledge Representation", "MASS", "Path Planning", "Trajectory Planning"]
 trl_level: "3"
 trl_description: "Экспериментальное подтверждение концепции"
 ---

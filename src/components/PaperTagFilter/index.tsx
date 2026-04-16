@@ -12,46 +12,82 @@ interface PaperTagFilterProps {
 export default function PaperTagFilter({ onTagsChange }: PaperTagFilterProps): JSX.Element {
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
 
-  // Все доступные теги (собираются из метаданных статей)
-  const allTags = useMemo(() => {
-    const tags = new Set<string>();
-    
-    // Здесь можно добавить логику для получения тегов из статей
-    // Пока используем статический список
-    const staticTags = [
-      'Research',
-      'Maritime',
-      'Collision Avoidance',
-      'Navigation',
+  // Все доступные теги, организованные по категориям
+  const tagCategories = useMemo(() => ({
+    'Алгоритмы и модели': [
       'Dynamic Window Approach',
       'Deep Reinforcement Learning',
+      'Model Predictive Control',
       'Path Planning',
-      'MASS',
-      'COLREGs',
-      'Safety',
       'Machine Learning',
-      'Sensor Processing',
-      'Situational Awareness',
-      'Knowledge Representation',
-      'Decision Making',
-      'Simulation',
-      'Real-time',
-      'Optimization',
-      'Testing',
-      'Compliance',
-      'IMO',
       'Fuzzy Logic',
       'Genetic Algorithm',
-      'Model Predictive Control',
       'Particle Swarm',
-      'ASV',
-      'USV',
-      'Vessel',
-    ];
-    
-    staticTags.forEach(tag => tags.add(tag));
-    return Array.from(tags).sort();
-  }, []);
+      'Reinforcement Learning',
+      'Neural Networks',
+      'Optimization Algorithm',
+    ],
+    'Архитектура MASS - Perception': [
+      'Perception',
+      'Sensor Fusion',
+      'Image Processing',
+    ],
+    'Архитектура MASS - Decision Making': [
+      'Decision Making',
+      'Behavior Planning',
+      'Trajectory Planning',
+    ],
+    'Архитектура MASS - Control': [
+      'Control System',
+      'Adaptive Control',
+      'Nonlinear Control',
+    ],
+    'Архитектура MASS - Collision Avoidance': [
+      'Collision Avoidance',
+      'Obstacle Avoidance',
+      'COLREGs',
+    ],
+    'Архитектура MASS - Situational Awareness': [
+      'Situational Awareness',
+      'Knowledge Representation',
+      'Environment Modeling',
+    ],
+    'Архитектура MASS - Communication & Data Management': [
+      'Communication',
+      'Data Management',
+      'Cloud Computing',
+    ],
+    'Архитектура MASS - Human Machine Interaction': [
+      'Human Machine Interaction',
+      'User Interface',
+      'Remote Control',
+    ],
+    'Архитектура MASS - Cybersecurity': [
+      'Cybersecurity',
+      'Network Security',
+      'Data Protection',
+    ],
+    'Архитектура MASS - System Health Management': [
+      'System Health Management',
+      'Fault Tolerance',
+      'Maintenance',
+    ],
+    'Архитектура MASS - Digital Twin Support': [
+      'Digital Twin',
+      'Simulation',
+      'Testing',
+    ],
+    'Compliance & Regulatory Layer': [
+      'Safety',
+      'Compliance',
+      'IMO',
+      'MASS',
+    ],
+  }), []);
+
+  const allTags = useMemo(() => {
+    return Object.values(tagCategories).flat().sort();
+  }, [tagCategories]);
 
   const handleTagToggle = (tag: string) => {
     const newSelectedTags = new Set(selectedTags);
@@ -80,25 +116,32 @@ export default function PaperTagFilter({ onTagsChange }: PaperTagFilterProps): J
         )}
       </div>
       
-      <div className={styles.tagContainer}>
-        {allTags.map((tag) => (
-          <button
-            key={tag}
-            className={`${styles.tag} ${selectedTags.has(tag) ? styles.selected : ''}`}
-            onClick={() => handleTagToggle(tag)}
-            title={`Фильтровать по тегу: ${tag}`}
-          >
-            <span className={styles.tagLabel}>{tag}</span>
-            {selectedTags.has(tag) && <span className={styles.checkmark}>✓</span>}
-          </button>
+      <div className={styles.categoriesContainer}>
+        {Object.entries(tagCategories).map(([category, tags]) => (
+          <div key={category} className={styles.category}>
+            <h4 className={styles.categoryTitle}>{category}</h4>
+            <div className={styles.tagContainer}>
+              {tags.map((tag) => (
+                <button
+                  key={tag}
+                  className={`${styles.tag} ${selectedTags.has(tag) ? styles.selected : ''}`}
+                  onClick={() => handleTagToggle(tag)}
+                  title={`Фильтровать по тегу: ${tag}`}
+                >
+                  <span className={styles.tagLabel}>{tag}</span>
+                  {selectedTags.has(tag) && <span className={styles.checkmark}>✓</span>}
+                </button>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
 
       {selectedTags.size > 0 && (
         <div className={styles.selectedTags}>
-          <p className={styles.selectedLabel}>Выбранные теги:</p>
+          <p className={styles.selectedLabel}>Выбранные теги ({selectedTags.size}):</p>
           <div className={styles.selectedTagsList}>
-            {Array.from(selectedTags).map((tag) => (
+            {Array.from(selectedTags).sort().map((tag) => (
               <span key={tag} className={styles.selectedTag}>
                 {tag}
                 <button

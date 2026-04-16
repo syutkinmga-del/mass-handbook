@@ -7,7 +7,7 @@ source: "crossref"
 url: "https://doi.org/10.20944/preprints202403.1831.v1"
 arxiv_id: "N/A"
 sidebar_position: "6"
-tags: ["Collision Avoidance", "Decision Making", "Genetic Algorithm", "Maritime", "Navigation", "Research", "Vessel"]
+tags: ["Collision Avoidance", "Decision Making", "Genetic Algorithm", "Obstacle Avoidance", "User Interface"]
 trl_level: "3"
 trl_description: "Экспериментальное подтверждение концепции"
 ---

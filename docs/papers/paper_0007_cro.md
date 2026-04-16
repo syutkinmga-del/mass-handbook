@@ -7,7 +7,7 @@ source: "crossref"
 url: "https://doi.org/10.1109/access.2024.3419706"
 arxiv_id: "N/A"
 sidebar_position: "7"
-tags: ["Collision Avoidance", "Maritime", "Research", "Vessel"]
+tags: ["Collision Avoidance"]
 trl_level: "3"
 trl_description: "Экспериментальное подтверждение концепции"
 ---
