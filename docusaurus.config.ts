@@ -78,7 +78,6 @@ onBrokenMarkdownLinks: 'warn',
         alt: 'MASS Logo',
         src: 'img/logo.svg',
       },
-      searchBar: true,
       items: [
         {
           type: 'docSidebar',
