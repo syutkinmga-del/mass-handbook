@@ -7,7 +7,7 @@ source: "crossref"
 url: "https://doi.org/10.1016/j.oceaneng.2023.115208"
 arxiv_id: "N/A"
 sidebar_position: "4"
-tags: ["Research", "Maritime", "Autonomous"]
+tags: ["Collision Avoidance", "Deep Reinforcement Learning", "Dynamic Window Approach", "MASS", "Maritime", "Path Planning", "Research", "Vessel"]
 trl_level: "3"
 trl_description: "Экспериментальное подтверждение концепции"
 ---

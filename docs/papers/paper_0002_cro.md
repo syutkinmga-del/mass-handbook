@@ -7,7 +7,7 @@ source: "crossref"
 url: "https://doi.org/10.1201/9781003684404-54"
 arxiv_id: "N/A"
 sidebar_position: "2"
-tags: ["Research", "Maritime", "Autonomous"]
+tags: ["Collision Avoidance", "Dynamic Window Approach", "Maritime", "Research"]
 trl_level: "3"
 trl_description: "Экспериментальное подтверждение концепции"
 ---

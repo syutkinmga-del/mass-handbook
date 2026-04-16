@@ -3,6 +3,7 @@
 Скрипт сбора и обработки научных статей.
 Поддерживает поиск по ключевым словам и прямую загрузку по DOI.
 Накапливает статьи, не перезаписывая существующие.
+Автоматически генерирует специфичные теги на основе содержимого.
 """
 import os
 import json
@@ -22,6 +23,45 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Словарь ключевых слов для автоматического тегирования
+TAG_KEYWORDS = {
+    # Методологические подходы
+    'Dynamic Window Approach': ['dynamic window', 'dwa', 'velocity obstacle'],
+    'Deep Reinforcement Learning': ['deep reinforcement learning', 'drl', 'q-learning', 'policy gradient'],
+    'Model Predictive Control': ['model predictive control', 'mpc', 'predictive'],
+    'Path Planning': ['path planning', 'route planning', 'trajectory planning', 'motion planning'],
+    'Machine Learning': ['machine learning', 'neural network', 'classification', 'regression'],
+    'Fuzzy Logic': ['fuzzy', 'fuzzy inference', 'fuzzy logic'],
+    'Genetic Algorithm': ['genetic algorithm', 'evolutionary', 'ga'],
+    'Particle Swarm': ['particle swarm', 'pso'],
+    
+    # Области применения
+    'Collision Avoidance': ['collision avoidance', 'collision detection', 'avoid collision', 'anti-collision'],
+    'Navigation': ['navigation', 'autonomous navigation', 'maritime navigation'],
+    'Sensor Processing': ['sensor', 'lidar', 'radar', 'camera', 'perception'],
+    'Situational Awareness': ['situational awareness', 'situation awareness', 'awareness'],
+    'Knowledge Representation': ['knowledge map', 'knowledge graph', 'ontology', 'semantic'],
+    'Decision Making': ['decision making', 'decision support', 'decision system'],
+    
+    # Нормативные и регуляторные аспекты
+    'COLREGs': ['colregs', 'international regulations', 'collision prevention', 'rules of the road'],
+    'IMO': ['imo', 'international maritime', 'maritime regulations'],
+    'Safety': ['safety', 'risk assessment', 'hazard', 'safety analysis'],
+    'Compliance': ['compliance', 'regulatory', 'regulation'],
+    
+    # Типы судов и систем
+    'MASS': ['mass', 'maritime autonomous', 'autonomous surface ship'],
+    'ASV': ['asv', 'autonomous surface vehicle'],
+    'USV': ['usv', 'unmanned surface vehicle'],
+    'Vessel': ['vessel', 'ship', 'boat', 'maritime'],
+    
+    # Другие аспекты
+    'Simulation': ['simulation', 'simulator', 'virtual environment'],
+    'Real-time': ['real-time', 'real time', 'online'],
+    'Optimization': ['optimization', 'optimal', 'efficiency'],
+    'Testing': ['testing', 'validation', 'verification', 'experiment'],
+}
 
 def escape_mdx_content(text: str) -> str:
     """
@@ -53,6 +93,33 @@ def sanitize_frontmatter(data: Dict) -> Dict:
         else:
             sanitized[key] = value
     return sanitized
+
+def generate_tags_from_content(paper_data: Dict) -> List[str]:
+    """
+    Автоматически генерирует теги на основе содержимого статьи.
+    Анализирует заголовок, авторов и аннотацию.
+    """
+    tags = set()
+    
+    # Объединяем текст для анализа
+    text_to_analyze = f"{paper_data.get('title', '')} {paper_data.get('abstract_en', '')}".lower()
+    
+    # Проходим по словарю ключевых слов
+    for tag, keywords in TAG_KEYWORDS.items():
+        for keyword in keywords:
+            if keyword.lower() in text_to_analyze:
+                tags.add(tag)
+                break  # Нашли совпадение для этого тега, переходим к следующему
+    
+    # Добавляем базовые теги
+    tags.add('Research')
+    tags.add('Maritime')
+    
+    # Если теги не найдены, добавляем общий тег
+    if len(tags) <= 2:
+        tags.add('Autonomous')
+    
+    return sorted(list(tags))
 
 def get_existing_dois_and_arxiv_ids(output_dir: str) -> tuple[set, set]:
     """
@@ -385,7 +452,8 @@ def main():
             
         # Настройка метаданных
         paper['sidebar_position'] = next_id
-        paper['tags'] = ['Research', 'Maritime', 'Autonomous']
+        # Генерируем теги автоматически на основе содержимого
+        paper['tags'] = generate_tags_from_content(paper)
         paper['trl_level'] = 3
         paper['trl_description'] = 'Экспериментальное подтверждение концепции'
         
@@ -394,6 +462,8 @@ def main():
         output_path = os.path.join(args.output_dir, filename)
         
         if generate_markdown_safe(paper, output_path):
+            logger.info(f"✓ Добавлена статья: {paper['title'][:60]}...")
+            logger.info(f"  Теги: {', '.join(paper['tags'])}")
             next_id += 1
             added_count += 1
     
@@ -404,6 +474,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
 

@@ -7,7 +7,7 @@ source: "crossref"
 url: "https://doi.org/10.3390/su14010198"
 arxiv_id: "N/A"
 sidebar_position: "1"
-tags: ["Research", "Maritime", "Autonomous"]
+tags: ["COLREGs", "Collision Avoidance", "Compliance", "Dynamic Window Approach", "Fuzzy Logic", "Genetic Algorithm", "MASS", "Maritime", "Navigation", "Path Planning", "Research", "Safety", "Vessel"]
 trl_level: "3"
 trl_description: "Экспериментальное подтверждение концепции"
 ---

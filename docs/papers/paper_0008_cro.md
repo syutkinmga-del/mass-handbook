@@ -7,7 +7,7 @@ source: "crossref"
 url: "https://doi.org/10.24868/10722"
 arxiv_id: "N/A"
 sidebar_position: "8"
-tags: ["Research", "Maritime", "Autonomous"]
+tags: ["Knowledge Representation", "MASS", "Maritime", "Research", "Situational Awareness", "Vessel"]
 trl_level: "3"
 trl_description: "Экспериментальное подтверждение концепции"
 ---
