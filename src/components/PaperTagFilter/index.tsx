@@ -1,16 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
+import { useTagFilter } from '@site/src/contexts/TagFilterContext';
 import styles from './styles.module.css';
-
-interface PaperTagFilterProps {
-  onTagsChange?: (selectedTags: string[]) => void;
-}
 
 /**
  * Компонент для фильтрации статей по тегам
  * Отображает все доступные теги и позволяет выбирать несколько тегов одновременно
+ * Использует TagFilterContext для управления состоянием фильтра
  */
-export default function PaperTagFilter({ onTagsChange }: PaperTagFilterProps): JSX.Element {
-  const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
+export default function PaperTagFilter(): JSX.Element {
+  const { selectedTags, toggleTag, clearTags } = useTagFilter();
 
   // Все доступные теги, организованные по категориям
   const tagCategories = useMemo(() => ({
@@ -85,24 +83,8 @@ export default function PaperTagFilter({ onTagsChange }: PaperTagFilterProps): J
     ],
   }), []);
 
-  const allTags = useMemo(() => {
-    return Object.values(tagCategories).flat().sort();
-  }, [tagCategories]);
-
   const handleTagToggle = (tag: string) => {
-    const newSelectedTags = new Set(selectedTags);
-    if (newSelectedTags.has(tag)) {
-      newSelectedTags.delete(tag);
-    } else {
-      newSelectedTags.add(tag);
-    }
-    setSelectedTags(newSelectedTags);
-    onTagsChange?.(Array.from(newSelectedTags));
-  };
-
-  const handleClearAll = () => {
-    setSelectedTags(new Set());
-    onTagsChange?.([]);
+    toggleTag(tag);
   };
 
   return (
@@ -110,7 +92,7 @@ export default function PaperTagFilter({ onTagsChange }: PaperTagFilterProps): J
       <div className={styles.header}>
         <h3>Фильтр по тегам</h3>
         {selectedTags.size > 0 && (
-          <button className={styles.clearButton} onClick={handleClearAll}>
+          <button className={styles.clearButton} onClick={clearTags}>
             Очистить ({selectedTags.size})
           </button>
         )}
