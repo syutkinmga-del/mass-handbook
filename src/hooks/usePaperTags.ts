@@ -1,26 +1,11 @@
-import { useMemo, useState, useEffect } from 'react';
-
-export interface PaperMetadata {
-  id: string;
-  title: string;
-  tags: string[];
-}
+import { papersData, type PaperMetadata } from '@site/src/data/papersData';
 
 /**
- * Хук для загрузки метаданных статей из JSON файла
+ * Хук для получения метаданных статей
+ * Использует встроенные данные вместо загрузки из JSON
  */
 export function usePaperTags(): PaperMetadata[] {
-  const [papers, setPapers] = useState<PaperMetadata[]>([]);
-
-  useEffect(() => {
-    // Загружаем данные о статьях из JSON файла
-    fetch('/papers-data.json')
-      .then((response) => response.json())
-      .then((data) => setPapers(data))
-      .catch((error) => console.error('Failed to load papers data:', error));
-  }, []);
-
-  return papers;
+  return papersData;
 }
 
 /**
@@ -59,3 +44,5 @@ export function getHiddenDocIds(
       .filter((id) => !visibleIds.has(id))
   );
 }
+
+export type { PaperMetadata };
