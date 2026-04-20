@@ -3,6 +3,7 @@ sidebar_position: 0
 ---
 
 import PaperTagFilter from '@site/src/components/PaperTagFilter';
+import InteractivePapersList from '@site/src/components/InteractivePapersList';
 
 # Статьи
 
@@ -18,4 +19,6 @@ import PaperTagFilter from '@site/src/components/PaperTagFilter';
 
 <PaperTagFilter />
 
-Используйте навигацию слева для просмотра всех доступных статей.
+## Доступные статьи
+
+<InteractivePapersList />
