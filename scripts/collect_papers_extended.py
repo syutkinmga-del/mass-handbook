@@ -332,8 +332,13 @@ def generate_markdown_safe(paper_data: Dict, output_path: str) -> bool:
 def is_doi(query: str) -> bool:
     """
     Проверяет, является ли строка DOI.
+    Поддерживает все валидные форматы DOI, включая те с точками в суффиксе.
     """
-    return bool(re.match(r'^10\.\d{4,9}/[-._;()/:A-Z0-9]+$', query, re.IGNORECASE))
+    # Улучшенное регулярное выражение для DOI
+    # Формат: 10.prefix/suffix
+    # prefix: 4-9 цифр
+    # suffix: может содержать буквы, цифры, точки, дефисы, подчеркивания, скобки, двоеточия, слэши
+    return bool(re.match(r'^10\.\d{4,9}/[\w.\-();/:]+$', query, re.IGNORECASE))
 
 def fetch_paper_by_doi(doi: str, email: str) -> List[Dict]:
     """
