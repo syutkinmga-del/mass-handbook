@@ -1,18 +1,15 @@
-import React, { useMemo } from 'react';
-import { useTagFilter } from '@site/src/contexts/TagFilterContext';
+import React, { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 
-/**
- * Компонент для фильтрации статей по тегам
- * Отображает все доступные теги и позволяет выбирать несколько тегов одновременно
- * Использует TagFilterContext для управления состоянием фильтра
- */
-export default function PaperTagFilter(): JSX.Element {
-  const { selectedTags, toggleTag, clearTags } = useTagFilter();
+interface TagCategory {
+  name: string;
+  tags: string[];
+}
 
-  // Все доступные теги, организованные по категориям
-  const tagCategories = useMemo(() => ({
-    'Алгоритмы и модели': [
+const TAG_CATEGORIES: TagCategory[] = [
+  {
+    name: 'Алгоритмы и модели',
+    tags: [
       'Dynamic Window Approach',
       'Deep Reinforcement Learning',
       'Model Predictive Control',
@@ -25,93 +22,122 @@ export default function PaperTagFilter(): JSX.Element {
       'Neural Networks',
       'Optimization Algorithm',
     ],
-    'Архитектура MASS - Perception': [
-      'Perception',
-      'Sensor Fusion',
-      'Image Processing',
-    ],
-    'Архитектура MASS - Decision Making': [
-      'Decision Making',
-      'Behavior Planning',
-      'Trajectory Planning',
-    ],
-    'Архитектура MASS - Control': [
-      'Control System',
-      'Adaptive Control',
-      'Nonlinear Control',
-    ],
-    'Архитектура MASS - Collision Avoidance': [
-      'Collision Avoidance',
-      'Obstacle Avoidance',
-      'COLREGs',
-    ],
-    'Архитектура MASS - Situational Awareness': [
-      'Situational Awareness',
-      'Knowledge Representation',
-      'Environment Modeling',
-    ],
-    'Архитектура MASS - Communication & Data Management': [
-      'Communication',
-      'Data Management',
-      'Cloud Computing',
-    ],
-    'Архитектура MASS - Human Machine Interaction': [
-      'Human Machine Interaction',
-      'User Interface',
-      'Remote Control',
-    ],
-    'Архитектура MASS - Cybersecurity': [
-      'Cybersecurity',
-      'Network Security',
-      'Data Protection',
-    ],
-    'Архитектура MASS - System Health Management': [
-      'System Health Management',
-      'Fault Tolerance',
-      'Maintenance',
-    ],
-    'Архитектура MASS - Digital Twin Support': [
-      'Digital Twin',
-      'Simulation',
-      'Testing',
-    ],
-    'Compliance & Regulatory Layer': [
-      'Safety',
-      'Compliance',
-      'IMO',
-      'MASS',
-    ],
-  }), []);
+  },
+  {
+    name: 'Архитектура MASS - Perception',
+    tags: ['Perception', 'Sensor Fusion', 'Image Processing'],
+  },
+  {
+    name: 'Архитектура MASS - Decision Making',
+    tags: ['Decision Making', 'Behavior Planning', 'Trajectory Planning'],
+  },
+  {
+    name: 'Архитектура MASS - Control',
+    tags: ['Control System', 'Adaptive Control', 'Nonlinear Control'],
+  },
+  {
+    name: 'Архитектура MASS - Collision Avoidance',
+    tags: ['Collision Avoidance', 'Obstacle Avoidance', 'COLREGs'],
+  },
+  {
+    name: 'Архитектура MASS - Situational Awareness',
+    tags: ['Situational Awareness', 'Knowledge Representation', 'Environment Modeling'],
+  },
+  {
+    name: 'Архитектура MASS - Communication & Data Management',
+    tags: ['Communication', 'Data Management', 'Cloud Computing'],
+  },
+  {
+    name: 'Архитектура MASS - Human Machine Interaction',
+    tags: ['Human Machine Interaction', 'User Interface', 'Remote Control'],
+  },
+  {
+    name: 'Архитектура MASS - Cybersecurity',
+    tags: ['Cybersecurity', 'Network Security', 'Data Protection'],
+  },
+  {
+    name: 'Архитектура MASS - System Health Management',
+    tags: ['System Health Management', 'Fault Tolerance', 'Maintenance'],
+  },
+  {
+    name: 'Архитектура MASS - Digital Twin Support',
+    tags: ['Digital Twin', 'Simulation', 'Testing'],
+  },
+  {
+    name: 'Compliance & Regulatory Layer',
+    tags: ['Safety', 'Compliance', 'IMO', 'MASS'],
+  },
+];
 
-  const handleTagToggle = (tag: string) => {
-    toggleTag(tag);
+const STORAGE_KEY = 'mass-handbook-selected-tags';
+
+export default function PaperTagFilter(): JSX.Element {
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [isClient, setIsClient] = useState(false);
+
+  // Initialize from localStorage on client side
+  useEffect(() => {
+    setIsClient(true);
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        setSelectedTags(JSON.parse(stored));
+      } catch (e) {
+        console.error('Failed to parse stored tags:', e);
+      }
+    }
+  }, []);
+
+  // Dispatch custom event when tags change so sidebar can listen
+  useEffect(() => {
+    if (isClient) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedTags));
+      // Dispatch custom event for sidebar to listen to
+      window.dispatchEvent(
+        new CustomEvent('tagsChanged', { detail: { tags: selectedTags } })
+      );
+    }
+  }, [selectedTags, isClient]);
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev =>
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    );
   };
+
+  const clearTags = () => {
+    setSelectedTags([]);
+  };
+
+  if (!isClient) {
+    return <div className={styles.tagFilter} />;
+  }
 
   return (
     <div className={styles.tagFilter}>
       <div className={styles.header}>
         <h3>Фильтр по тегам</h3>
-        {selectedTags.size > 0 && (
+        {selectedTags.length > 0 && (
           <button className={styles.clearButton} onClick={clearTags}>
-            Очистить ({selectedTags.size})
+            Очистить ({selectedTags.length})
           </button>
         )}
       </div>
-      
+
       <div className={styles.categoriesContainer}>
-        {Object.entries(tagCategories).map(([category, tags]) => (
-          <div key={category} className={styles.category}>
-            <h4 className={styles.categoryTitle}>{category}</h4>
+        {TAG_CATEGORIES.map(category => (
+          <div key={category.name} className={styles.category}>
+            <h4 className={styles.categoryTitle}>{category.name}</h4>
             <div className={styles.tagContainer}>
-              {tags.map((tag) => (
+              {category.tags.map(tag => (
                 <button
                   key={tag}
-                  className={`${styles.tag} ${selectedTags.has(tag) ? styles.selected : ''}`}
-                  onClick={() => handleTagToggle(tag)}
+                  className={`${styles.tag} ${selectedTags.includes(tag) ? styles.selected : ''}`}
+                  onClick={() => toggleTag(tag)}
                   title={`Фильтровать по тегу: ${tag}`}
                 >
                   <span className={styles.tagLabel}>{tag}</span>
-                  {selectedTags.has(tag) && <span className={styles.checkmark}>✓</span>}
+                  {selectedTags.includes(tag) && <span className={styles.checkmark}>✓</span>}
                 </button>
               ))}
             </div>
@@ -119,16 +145,16 @@ export default function PaperTagFilter(): JSX.Element {
         ))}
       </div>
 
-      {selectedTags.size > 0 && (
+      {selectedTags.length > 0 && (
         <div className={styles.selectedTags}>
-          <p className={styles.selectedLabel}>Выбранные теги ({selectedTags.size}):</p>
+          <p className={styles.selectedLabel}>Выбранные теги ({selectedTags.length}):</p>
           <div className={styles.selectedTagsList}>
-            {Array.from(selectedTags).sort().map((tag) => (
+            {selectedTags.sort().map(tag => (
               <span key={tag} className={styles.selectedTag}>
                 {tag}
                 <button
                   className={styles.removeTag}
-                  onClick={() => handleTagToggle(tag)}
+                  onClick={() => toggleTag(tag)}
                   aria-label={`Удалить тег ${tag}`}
                 >
                   ×

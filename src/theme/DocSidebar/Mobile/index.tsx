@@ -1,93 +1,85 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import type { Props } from '@theme/DocSidebar/Mobile';
 import DocSidebarMobile from '@theme-original/DocSidebar/Mobile';
-import { useTagFilter } from '@site/src/contexts/TagFilterContext';
-import { usePaperTags, getHiddenDocIds } from '@site/src/hooks/usePaperTags';
+import { papersData } from '@site/src/data/papersData';
+
+const STORAGE_KEY = 'mass-handbook-selected-tags';
 
 /**
  * Компонент для фильтрации мобильного сайдбара на основе выбранных тегов
- * Использует JSON файл с метаданными статей для фильтрации
+ * Использует localStorage для синхронизации состояния фильтра
  */
 export default function DocSidebarMobileWrapper(props: Props): JSX.Element {
-  const { selectedTags, hasAnyTagSelected } = useTagFilter();
-  const papers = usePaperTags();
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [isClient, setIsClient] = useState(false);
 
-  // Если теги не выбраны или данные не загружены, показываем сайдбар как есть
-  if (!hasAnyTagSelected || papers.length === 0) {
-    return <DocSidebarMobile {...props} />;
-  }
+  // Initialize from localStorage and listen for changes
+  useEffect(() => {
+    setIsClient(true);
 
-  // Получаем список документов, которые нужно скрыть
-  const hiddenDocIds = useMemo(() => {
-    return getHiddenDocIds(papers, selectedTags);
-  }, [papers, selectedTags]);
+    // Load initial tags from localStorage
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const tags = JSON.parse(stored);
+        setSelectedTags(tags);
+      } catch (e) {
+        console.error('Failed to parse stored tags:', e);
+      }
+    }
 
-  // Фильтруем элементы сайдбара на основе скрытых документов
+    // Listen for tag changes from filter component
+    const handleTagsChanged = (event: CustomEvent) => {
+      const tags = event.detail?.tags || [];
+      setSelectedTags(tags);
+    };
+
+    window.addEventListener('tagsChanged', handleTagsChanged as EventListener);
+    return () => {
+      window.removeEventListener('tagsChanged', handleTagsChanged as EventListener);
+    };
+  }, []);
+
+  // Create a map of paper IDs to their tags for quick lookup
+  const paperTagsMap = useMemo(() => {
+    const map = new Map<string, string[]>();
+    papersData.forEach(paper => {
+      map.set(paper.id, paper.tags);
+    });
+    return map;
+  }, []);
+
+  // Filter sidebar items based on selected tags
   const filteredSidebar = useMemo(() => {
-    return filterSidebarItems(props.sidebar, hiddenDocIds);
-  }, [props.sidebar, hiddenDocIds]);
+    if (selectedTags.length === 0 || !isClient) {
+      return props.sidebar;
+    }
+
+    const filterSidebarItems = (items: any[]): any[] => {
+      return items
+        .map(item => {
+          // If it's a category/group, recursively filter its children
+          if (item.items && Array.isArray(item.items)) {
+            const filteredItems = filterSidebarItems(item.items);
+            return filteredItems.length > 0 ? { ...item, items: filteredItems } : null;
+          }
+
+          // If it's a doc item, check if it matches the selected tags
+          if (item.id) {
+            const paperTags = paperTagsMap.get(item.id) || [];
+            // Show item if it has ALL selected tags
+            const hasAllTags = selectedTags.every(tag => paperTags.includes(tag));
+            return hasAllTags ? item : null;
+          }
+
+          // Keep other items (links, etc.)
+          return item;
+        })
+        .filter(Boolean);
+    };
+
+    return filterSidebarItems(props.sidebar);
+  }, [selectedTags, props.sidebar, paperTagsMap, isClient]);
 
   return <DocSidebarMobile {...props} sidebar={filteredSidebar} />;
-}
-
-/**
- * Рекурсивно фильтрует элементы сайдбара
- */
-function filterSidebarItems(items: any[], hiddenDocIds: Set<string>): any[] {
-  return items
-    .map((item) => {
-      // Если это категория, рекурсивно фильтруем её элементы
-      if (item.type === 'category' && item.items) {
-        const filteredItems = filterSidebarItems(item.items, hiddenDocIds);
-        
-        // Если в категории остались элементы, возвращаем её
-        if (filteredItems.length > 0) {
-          return {
-            ...item,
-            items: filteredItems,
-          };
-        }
-        
-        // Если в категории нет элементов, пропускаем её
-        return null;
-      }
-
-      // Если это документ (статья), проверяем, нужно ли его скрывать
-      if (item.type === 'doc') {
-        const docId = item.id || extractDocIdFromItem(item);
-        
-        // Если документ скрыт, пропускаем его
-        if (docId && hiddenDocIds.has(docId)) {
-          return null;
-        }
-        
-        return item;
-      }
-
-      // Для других типов элементов показываем как есть
-      return item;
-    })
-    .filter((item) => item !== null);
-}
-
-/**
- * Извлекает ID документа из объекта элемента сайдбара
- */
-function extractDocIdFromItem(item: any): string | null {
-  if (item.id) {
-    return item.id;
-  }
-
-  if (item.docId) {
-    return item.docId;
-  }
-
-  if (item.href) {
-    const match = item.href.match(/\/docs\/papers\/([^/]+)$/);
-    if (match) {
-      return match[1];
-    }
-  }
-
-  return null;
 }
