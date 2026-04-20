@@ -486,8 +486,8 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(description='Сбор и обработка научных статей')
-    parser.add_argument('--query', default='maritime autonomous collision avoidance', help='Поисковый запрос (ключевые слова или DOI)')
-    parser.add_argument('--doi', help='DOI статьи (альтернатива --query)')
+    parser.add_argument('--query', default='', help='Поисковый запрос (ключевые слова или DOI)')
+    parser.add_argument('--doi', default='', help='DOI статьи (альтернатива --query)')
     parser.add_argument('--max-papers', type=int, default=20, help='Максимальное количество статей')
     parser.add_argument('--email', default='bot@mass-handbook.local', help='Email для CrossRef API (по умолчанию: bot@mass-handbook.local)')
     parser.add_argument('--output-dir', default='docs/papers', help='Директория для сохранения')
@@ -502,10 +502,15 @@ def main():
     all_papers = []
     
     # Если указан DOI, используем его вместо query
-    if args.doi:
-        query = args.doi
-    else:
+    if args.doi and args.doi.strip():
+        query = args.doi.strip()
+    elif args.query and args.query.strip():
         query = " ".join(args.query.replace("\n", " ").replace("\r", " ").split())
+    else:
+        logger.error("Ошибка: укажите либо --doi, либо --query")
+        logger.error("Пример: python3 collect_papers_extended.py --doi 10.3390/jmse13010122")
+        logger.error("Или: python3 collect_papers_extended.py --query maritime autonomous")
+        return
     
     if is_doi(query):
         logger.info(f"Обнаружен DOI: {query}")
