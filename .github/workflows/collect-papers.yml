@@ -36,7 +36,7 @@ jobs:
       run: |
         # Detect if input is a DOI or search query
         INPUT="${{ github.event.inputs.query }}"
-        if [[ $INPUT =~ ^10\.[0-9]{4,9}/[-._;()/:A-Z0-9.]+$ ]]; then
+        if [[ $INPUT =~ ^10\.[0-9]+/.+$ ]]; then
           # It's a DOI
           python scripts/collect_papers_extended.py \
             --doi "$INPUT" \
