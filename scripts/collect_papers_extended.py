@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Optional, Dict, List
 import re
 import glob
+from openai import OpenAI
 
 # Настройка логирования
 logging.basicConfig(
@@ -95,6 +96,56 @@ TAG_KEYWORDS = {
     'IMO': ['imo', 'international maritime', 'maritime regulations', 'maritime law'],
     'MASS': ['mass', 'maritime autonomous', 'autonomous surface ship'],
 }
+
+def translate_to_russian(text: str) -> str:
+    """
+    Переводит текст на русский язык используя OpenAI API.
+    """
+    if not text or len(text.strip()) < 10:
+        return ""
+    
+    try:
+        client = OpenAI()
+        response = client.chat.completions.create(
+            model="gpt-4.1-mini",
+            messages=[
+                {"role": "system", "content": "You are a professional translator. Translate the following academic abstract to Russian. Maintain technical terms and scientific accuracy."},
+                {"role": "user", "content": text}
+            ],
+            temperature=0.3,
+            max_tokens=500
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        logger.warning(f"Ошибка при переводе текста: {e}")
+        return ""
+
+def generate_key_findings(abstract: str) -> str:
+    """
+    Генерирует ключевые выводы из аннотации используя OpenAI API.
+    """
+    if not abstract or len(abstract.strip()) < 50:
+        return ""
+    
+    try:
+        client = OpenAI()
+        response = client.chat.completions.create(
+            model="gpt-4.1-mini",
+            messages=[
+                {"role": "system", "content": "You are an expert in summarizing academic papers. Extract 3-5 key findings from the abstract. Format as a bullet list. Be concise and specific."},
+                {"role": "user", "content": f"Abstract: {abstract}"}
+            ],
+            temperature=0.3,
+            max_tokens=300
+        )
+        findings = response.choices[0].message.content.strip()
+        # Ensure it's formatted as bullet points
+        if not findings.startswith('-'):
+            findings = '- ' + findings.replace('\n', '\n- ')
+        return findings
+    except Exception as e:
+        logger.warning(f"Ошибка при генерации ключевых выводов: {e}")
+        return ""
 
 def escape_mdx_content(text: str) -> str:
     """
@@ -306,13 +357,19 @@ def fetch_paper_by_doi(doi: str, email: str) -> List[Dict]:
             logger.warning(f"Статья с DOI {doi} не найдена")
             return []
             
+        abstract_en = item.get('abstract', '')
+        abstract_ru = translate_to_russian(abstract_en) if abstract_en else ''
+        key_findings = generate_key_findings(abstract_en) if abstract_en else ''
+        
         paper = {
             'title': item.get('title', ['Unknown'])[0],
-            'authors': ', '.join([f"{a.get('given', '')} {a.get('family', '')}".strip() 
+            'authors': ', '.join([f"{a.get('given', '')} {a.get('family', '')}" .strip() 
                                 for a in item.get('author', [])[:3]]) or 'Unknown',
             'year': item.get('published-online', {}).get('date-parts', [[None]])[0][0] or 'N/A',
             'doi': item.get('DOI', 'N/A'),
-            'abstract_en': item.get('abstract', ''),
+            'abstract_en': abstract_en,
+            'abstract_ru': abstract_ru,
+            'key_findings': key_findings,
             'source': 'crossref',
             'url': item.get('URL', ''),
             'arxiv_id': 'N/A'
@@ -345,13 +402,19 @@ def fetch_papers_crossref(query: str, email: str, max_papers: int = 20) -> List[
         data = response.json()
         
         for item in data.get('message', {}).get('items', [])[:max_papers]:
+            abstract_en = item.get('abstract', '')
+            abstract_ru = translate_to_russian(abstract_en) if abstract_en else ''
+            key_findings = generate_key_findings(abstract_en) if abstract_en else ''
+            
             paper = {
                 'title': item.get('title', ['Unknown'])[0],
-                'authors': ', '.join([f"{a.get('given', '')} {a.get('family', '')}".strip() 
+                'authors': ', '.join([f"{a.get('given', '')} {a.get('family', '')}" .strip() 
                                     for a in item.get('author', [])[:3]]) or 'Unknown',
                 'year': item.get('published-online', {}).get('date-parts', [[None]])[0][0] or 'N/A',
                 'doi': item.get('DOI', 'N/A'),
-                'abstract_en': item.get('abstract', ''),
+                'abstract_en': abstract_en,
+                'abstract_ru': abstract_ru,
+                'key_findings': key_findings,
                 'source': 'crossref',
                 'url': item.get('URL', ''),
                 'arxiv_id': 'N/A'
