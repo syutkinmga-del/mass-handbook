@@ -5,6 +5,7 @@ sidebar_position: 0
 import PaperTagFilter from '@site/src/components/PaperTagFilter';
 import InteractivePapersList from '@site/src/components/InteractivePapersList';
 import TagCloud from '@site/src/components/TagCloud';
+import KnowledgeGraph from '@site/src/components/KnowledgeGraph';
 
 # Статьи
 
@@ -19,6 +20,10 @@ import TagCloud from '@site/src/components/TagCloud';
 ## Облако тегов
 
 <TagCloud />
+
+## Граф знаний
+
+<KnowledgeGraph />
 
 ## Фильтрация статей
 
