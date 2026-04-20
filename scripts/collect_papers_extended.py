@@ -487,6 +487,7 @@ def main():
     
     parser = argparse.ArgumentParser(description='Сбор и обработка научных статей')
     parser.add_argument('--query', default='maritime autonomous collision avoidance', help='Поисковый запрос (ключевые слова или DOI)')
+    parser.add_argument('--doi', help='DOI статьи (альтернатива --query)')
     parser.add_argument('--max-papers', type=int, default=20, help='Максимальное количество статей')
     parser.add_argument('--email', default='bot@mass-handbook.local', help='Email для CrossRef API (по умолчанию: bot@mass-handbook.local)')
     parser.add_argument('--output-dir', default='docs/papers', help='Директория для сохранения')
@@ -500,7 +501,11 @@ def main():
     # Собираем статьи
     all_papers = []
     
-    query = " ".join(args.query.replace("\n", " ").replace("\r", " ").split())
+    # Если указан DOI, используем его вместо query
+    if args.doi:
+        query = args.doi
+    else:
+        query = " ".join(args.query.replace("\n", " ").replace("\r", " ").split())
     
     if is_doi(query):
         logger.info(f"Обнаружен DOI: {query}")
