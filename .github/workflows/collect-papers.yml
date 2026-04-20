@@ -20,7 +20,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0 # Нужна полная история для корректного коммита
+        fetch-depth: 0
       
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -36,18 +36,34 @@ jobs:
       run: |
         # Detect if input is a DOI or search query
         INPUT="${{ github.event.inputs.query }}"
+        echo "Input: $INPUT"
+        # Simple DOI pattern: starts with 10. followed by digits, then slash
         if [[ $INPUT =~ ^10\.[0-9]+/.+$ ]]; then
+          echo "Detected as DOI"
           # It's a DOI
           python scripts/collect_papers_extended.py \
             --doi "$INPUT" \
             --max-papers ${{ github.event.inputs.max_papers }} \
             --output-dir docs/papers
+          EXIT_CODE=$?
+          echo "Script exit code: $EXIT_CODE"
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo "ERROR: Script failed with exit code $EXIT_CODE"
+            exit $EXIT_CODE
+          fi
         else
+          echo "Detected as search query"
           # It's a search query
           python scripts/collect_papers_extended.py \
             --query "$INPUT" \
             --max-papers ${{ github.event.inputs.max_papers }} \
             --output-dir docs/papers
+          EXIT_CODE=$?
+          echo "Script exit code: $EXIT_CODE"
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo "ERROR: Script failed with exit code $EXIT_CODE"
+            exit $EXIT_CODE
+          fi
         fi
           
     - name: Commit and push changes
