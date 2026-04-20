@@ -33,13 +33,10 @@ jobs:
         pip install requests
         
     - name: Run extended paper collection script
-      env:
-        CROSSREF_EMAIL: ${{ secrets.CROSSREF_EMAIL }}
       run: |
         python scripts/collect_papers_extended.py \
           --query "${{ github.event.inputs.query }}" \
           --max-papers ${{ github.event.inputs.max_papers }} \
-          --email "${CROSSREF_EMAIL}" \
           --output-dir docs/papers
           
     - name: Commit and push changes

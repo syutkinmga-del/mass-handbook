@@ -488,7 +488,7 @@ def main():
     parser = argparse.ArgumentParser(description='Сбор и обработка научных статей')
     parser.add_argument('--query', default='maritime autonomous collision avoidance', help='Поисковый запрос (ключевые слова или DOI)')
     parser.add_argument('--max-papers', type=int, default=20, help='Максимальное количество статей')
-    parser.add_argument('--email', required=True, help='Email для CrossRef API')
+    parser.add_argument('--email', default='bot@mass-handbook.local', help='Email для CrossRef API (по умолчанию: bot@mass-handbook.local)')
     parser.add_argument('--output-dir', default='docs/papers', help='Директория для сохранения')
     parser.add_argument('--use-openai', action='store_true', help='Использовать OpenAI для обработки')
     
