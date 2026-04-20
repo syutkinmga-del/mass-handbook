@@ -34,10 +34,21 @@ jobs:
         
     - name: Run extended paper collection script
       run: |
-        python scripts/collect_papers_extended.py \
-          --query "${{ github.event.inputs.query }}" \
-          --max-papers ${{ github.event.inputs.max_papers }} \
-          --output-dir docs/papers
+        # Detect if input is a DOI or search query
+        INPUT="${{ github.event.inputs.query }}"
+        if [[ $INPUT =~ ^10\.[0-9]{4,9}/[-._;()/:A-Z0-9.]+$ ]]; then
+          # It's a DOI
+          python scripts/collect_papers_extended.py \
+            --doi "$INPUT" \
+            --max-papers ${{ github.event.inputs.max_papers }} \
+            --output-dir docs/papers
+        else
+          # It's a search query
+          python scripts/collect_papers_extended.py \
+            --query "$INPUT" \
+            --max-papers ${{ github.event.inputs.max_papers }} \
+            --output-dir docs/papers
+        fi
           
     - name: Commit and push changes
       run: |
