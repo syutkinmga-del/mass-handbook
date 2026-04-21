@@ -56,18 +56,36 @@ jobs:
             --max-papers ${{ github.event.inputs.max_papers }} \
             --output-dir docs/papers
         fi
+
+    - name: Update glossary
+      continue-on-error: true
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+      run: |
+        echo "Updating glossary with new paper tags..."
+        if [ -z "$OPENAI_API_KEY" ]; then
+          echo "⚠️  OPENAI_API_KEY not set — skipping LLM-based glossary update."
+          echo "   To enable: add OPENAI_API_KEY secret in repository settings."
+          echo "   Glossary will still be regenerated from existing database."
+        fi
+        python scripts/update_glossary.py \
+          --papers-dir docs/papers \
+          --output-dir docs \
+          --db-path scripts/glossary-data.json
+        echo "Glossary update complete."
           
-    - name: Commit and push new papers
+    - name: Commit and push new papers and glossary
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         
-        git add docs/papers/
+        git add docs/papers/ docs/glossary.md docs/glossary-extended.md scripts/glossary-data.json
         
         if git diff --staged --quiet; then
           echo "No new papers added (possibly a duplicate)."
         else
           git commit -m "📄 Auto-add paper: ${{ github.event.inputs.query }}"
           git push
-          echo "Successfully pushed new papers!"
+          echo "Successfully pushed new papers and updated glossary!"
         fi
