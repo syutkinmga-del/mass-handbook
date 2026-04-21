@@ -460,6 +460,7 @@ sidebar_position: 4
 - [Integrating situation-aware knowledge maps and dynamic window approach for safe path planning by maritime autonomous surface ships](./papers/paper_0010_cro)
 - [Deploying Efficient LLM Agents on Maritime Autonomous Surface Ships: Fine-Tuning, RAG, and Function Calling in a Mid-Size Model](./papers/paper_0015_cro)
 - [Maritime Autonomous Surface Ships: Architecture for Autonomous Navigation Systems](./papers/paper_0016_cro)
+- [Advanced Control Strategies for Autonomous Maritime Systems](./papers/paper_0017_cro)
 
 ---
 

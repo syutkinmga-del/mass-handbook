@@ -23,7 +23,7 @@
       }
     ],
     "created_at": "2026-04-21T03:53:50.020783",
-    "updated_at": "2026-04-21T03:53:50.020794"
+    "updated_at": "2026-04-21T04:01:01.539844"
   },
   "Situational Awareness": {
     "tag": "Situational Awareness",
@@ -64,7 +64,7 @@
       }
     ],
     "created_at": "2026-04-21T03:53:56.365417",
-    "updated_at": "2026-04-21T03:53:56.365428"
+    "updated_at": "2026-04-21T04:01:01.539864"
   },
   "Collision Avoidance": {
     "tag": "Collision Avoidance",
@@ -146,7 +146,7 @@
       }
     ],
     "created_at": "2026-04-21T03:54:05.643485",
-    "updated_at": "2026-04-21T03:54:05.643496"
+    "updated_at": "2026-04-21T04:01:01.539872"
   },
   "DWA": {
     "tag": "DWA",
@@ -172,7 +172,7 @@
       }
     ],
     "created_at": "2026-04-21T03:54:12.225528",
-    "updated_at": "2026-04-21T03:54:12.225539"
+    "updated_at": "2026-04-21T04:01:01.539875"
   },
   "Knowledge Maps": {
     "tag": "Knowledge Maps",
@@ -198,7 +198,7 @@
       }
     ],
     "created_at": "2026-04-21T03:54:22.349498",
-    "updated_at": "2026-04-21T03:54:22.349510"
+    "updated_at": "2026-04-21T04:01:01.539877"
   },
   "COLREGs": {
     "tag": "COLREGs",
@@ -224,7 +224,7 @@
       }
     ],
     "created_at": "2026-04-21T03:54:30.780285",
-    "updated_at": "2026-04-21T03:54:30.780296"
+    "updated_at": "2026-04-21T04:01:01.539879"
   },
   "Compliance": {
     "tag": "Compliance",
@@ -260,7 +260,7 @@
       }
     ],
     "created_at": "2026-04-21T03:54:38.061938",
-    "updated_at": "2026-04-21T03:54:38.061948"
+    "updated_at": "2026-04-21T04:01:01.539880"
   },
   "Decision Making": {
     "tag": "Decision Making",
@@ -316,7 +316,7 @@
       }
     ],
     "created_at": "2026-04-21T03:54:44.425671",
-    "updated_at": "2026-04-21T03:54:44.425683"
+    "updated_at": "2026-04-21T04:01:01.539883"
   },
   "Dynamic Window Approach": {
     "tag": "Dynamic Window Approach",
@@ -363,7 +363,7 @@
       }
     ],
     "created_at": "2026-04-21T03:54:51.035088",
-    "updated_at": "2026-04-21T03:54:51.035099"
+    "updated_at": "2026-04-21T04:01:01.539885"
   },
   "Fuzzy Logic": {
     "tag": "Fuzzy Logic",
@@ -389,7 +389,7 @@
       }
     ],
     "created_at": "2026-04-21T03:54:58.894412",
-    "updated_at": "2026-04-21T03:54:58.894423"
+    "updated_at": "2026-04-21T04:01:01.539887"
   },
   "Genetic Algorithm": {
     "tag": "Genetic Algorithm",
@@ -450,7 +450,7 @@
       }
     ],
     "created_at": "2026-04-21T03:55:05.194593",
-    "updated_at": "2026-04-21T03:55:05.194604"
+    "updated_at": "2026-04-21T04:01:01.539889"
   },
   "MASS": {
     "tag": "MASS",
@@ -515,10 +515,15 @@
         "file": "paper_0016_cro.md",
         "title": "Maritime Autonomous Surface Ships: Architecture for Autonomous Navigation Systems",
         "doi": "\"10.3390/jmse13010122\""
+      },
+      {
+        "file": "paper_0017_cro.md",
+        "title": "Advanced Control Strategies for Autonomous Maritime Systems",
+        "doi": "\"10.3390/jmse14030315\""
       }
     ],
     "created_at": "2026-04-21T03:55:11.723488",
-    "updated_at": "2026-04-21T03:55:11.723499"
+    "updated_at": "2026-04-21T04:01:01.539892"
   },
   "Path Planning": {
     "tag": "Path Planning",
@@ -559,7 +564,7 @@
       }
     ],
     "created_at": "2026-04-21T03:55:18.706338",
-    "updated_at": "2026-04-21T03:55:18.706348"
+    "updated_at": "2026-04-21T04:01:01.539894"
   },
   "Safety": {
     "tag": "Safety",
@@ -590,7 +595,7 @@
       }
     ],
     "created_at": "2026-04-21T03:55:23.867765",
-    "updated_at": "2026-04-21T03:55:23.867776"
+    "updated_at": "2026-04-21T04:01:01.539896"
   },
   "Deep Reinforcement Learning": {
     "tag": "Deep Reinforcement Learning",
@@ -621,7 +626,7 @@
       }
     ],
     "created_at": "2026-04-21T03:55:31.529780",
-    "updated_at": "2026-04-21T03:55:31.529791"
+    "updated_at": "2026-04-21T04:01:01.539897"
   },
   "Reinforcement Learning": {
     "tag": "Reinforcement Learning",
@@ -653,7 +658,7 @@
       }
     ],
     "created_at": "2026-04-21T03:55:39.588882",
-    "updated_at": "2026-04-21T03:55:39.588896"
+    "updated_at": "2026-04-21T04:01:01.539899"
   },
   "Trajectory Planning": {
     "tag": "Trajectory Planning",
@@ -689,7 +694,7 @@
       }
     ],
     "created_at": "2026-04-21T03:55:46.488476",
-    "updated_at": "2026-04-21T03:55:46.488487"
+    "updated_at": "2026-04-21T04:01:01.539900"
   },
   "User Interface": {
     "tag": "User Interface",
@@ -740,7 +745,7 @@
       }
     ],
     "created_at": "2026-04-21T03:55:55.583532",
-    "updated_at": "2026-04-21T03:55:55.583544"
+    "updated_at": "2026-04-21T04:01:01.539902"
   },
   "Obstacle Avoidance": {
     "tag": "Obstacle Avoidance",
@@ -776,7 +781,7 @@
       }
     ],
     "created_at": "2026-04-21T03:56:03.063331",
-    "updated_at": "2026-04-21T03:56:03.063341"
+    "updated_at": "2026-04-21T04:01:01.539903"
   },
   "Knowledge Representation": {
     "tag": "Knowledge Representation",
@@ -817,7 +822,7 @@
       }
     ],
     "created_at": "2026-04-21T03:56:10.777861",
-    "updated_at": "2026-04-21T03:56:10.777883"
+    "updated_at": "2026-04-21T04:01:01.539905"
   },
   "Perception": {
     "tag": "Perception",
@@ -855,7 +860,7 @@
       }
     ],
     "created_at": "2026-04-21T03:56:19.492526",
-    "updated_at": "2026-04-21T03:56:19.492537"
+    "updated_at": "2026-04-21T04:01:01.539907"
   },
   "Digital Twin": {
     "tag": "Digital Twin",
@@ -882,7 +887,7 @@
       }
     ],
     "created_at": "2026-04-21T03:56:27.032470",
-    "updated_at": "2026-04-21T03:56:27.032480"
+    "updated_at": "2026-04-21T04:01:01.539908"
   },
   "Simulation": {
     "tag": "Simulation",
@@ -908,7 +913,7 @@
       }
     ],
     "created_at": "2026-04-21T03:56:33.857784",
-    "updated_at": "2026-04-21T03:56:33.857794"
+    "updated_at": "2026-04-21T04:01:01.539909"
   },
   "Fault Tolerance": {
     "tag": "Fault Tolerance",
@@ -934,7 +939,7 @@
       }
     ],
     "created_at": "2026-04-21T03:56:40.999597",
-    "updated_at": "2026-04-21T03:56:40.999611"
+    "updated_at": "2026-04-21T04:01:01.539910"
   },
   "Optimization Algorithm": {
     "tag": "Optimization Algorithm",
@@ -960,7 +965,7 @@
       }
     ],
     "created_at": "2026-04-21T03:56:47.725152",
-    "updated_at": "2026-04-21T03:56:47.725167"
+    "updated_at": "2026-04-21T04:01:01.539912"
   },
   "Testing": {
     "tag": "Testing",
@@ -987,7 +992,7 @@
       }
     ],
     "created_at": "2026-04-21T03:56:54.155083",
-    "updated_at": "2026-04-21T03:56:54.155094"
+    "updated_at": "2026-04-21T04:01:01.539913"
   },
   "Sensor Fusion": {
     "tag": "Sensor Fusion",
@@ -1013,6 +1018,6 @@
       }
     ],
     "created_at": "2026-04-21T03:57:03.852473",
-    "updated_at": "2026-04-21T03:57:03.852483"
+    "updated_at": "2026-04-21T04:01:01.539914"
   }
 }
