@@ -1,0 +1,1018 @@
+{
+  "Navigation": {
+    "tag": "Navigation",
+    "definition_ru": "Навигация — это процесс определения и поддержания курса судна для безопасного и эффективного перемещения по водной поверхности. Она включает сбор, обработку и использование информации о положении, маршруте и окружающей обстановке.",
+    "definition_en": "Navigation is the process of determining and maintaining a vessel's course for safe and efficient movement over water. It involves collecting, processing, and utilizing information about position, route, and the surrounding environment.",
+    "context": "В контексте морских автономных надводных судов (MASS) навигация играет ключевую роль в обеспечении автономного управления и принятия решений. Используются интегрированные системы, учитывающие ситуацию и знания для адаптивного планирования маршрута и предотвращения столкновений.",
+    "related_terms": [
+      "автономное управление",
+      "ситуационная осведомленность",
+      "маршрутизация",
+      "сенсоры",
+      "обработка данных"
+    ],
+    "examples": [
+      "Автономное судно корректирует курс на основе данных навигационной системы.",
+      "Система навигации интегрируется с картами знаний для повышения безопасности движения."
+    ],
+    "papers": [
+      {
+        "file": "Integrating-situation-aware-knowledge-maps.md",
+        "title": "Integrating-situation-aware-knowledge-maps.md",
+        "doi": ""
+      }
+    ],
+    "created_at": "2026-04-21T03:53:50.020783",
+    "updated_at": "2026-04-21T03:53:50.020794"
+  },
+  "Situational Awareness": {
+    "tag": "Situational Awareness",
+    "definition_ru": "Situational Awareness — это осознание текущей обстановки и динамики окружающей среды, включая состояние судна, другие объекты и потенциальные риски, необходимое для принятия эффективных решений в управлении автономным судном.",
+    "definition_en": "Situational Awareness is the perception and understanding of the current environment and its dynamics, including the status of the vessel, other objects, and potential hazards, essential for effective decision-making in autonomous vessel operations.",
+    "context": "В области морских автономных надводных судов (MASS) situational awareness играет ключевую роль в обеспечении безопасности и эффективности навигации. Она достигается посредством интеграции данных с различных сенсоров и построения знаний о морской обстановке, что позволяет автономным системам адаптироваться к изменяющимся условиям и предотвращать аварийные ситуации.",
+    "related_terms": [
+      "Автономная навигация",
+      "Сенсорные системы",
+      "Обработка данных",
+      "Принятие решений",
+      "Карта знаний"
+    ],
+    "examples": [
+      "Использование knowledge maps для улучшения situational awareness в автономных судах.",
+      "Выбор сенсоров на основе сценариев для повышения situational awareness в морских автономных системах."
+    ],
+    "papers": [
+      {
+        "file": "Integrating-situation-aware-knowledge-maps.md",
+        "title": "Integrating-situation-aware-knowledge-maps.md",
+        "doi": ""
+      },
+      {
+        "file": "paper_0008_cro.md",
+        "title": "Constructing Knowledge Maps for Situation Awareness of Maritime Autonomous Surface Ships",
+        "doi": "\"10.24868/10722\""
+      },
+      {
+        "file": "paper_0012_cro.md",
+        "title": "Scenario-Based Sensor Selection for Autonomous Maritime Systems: A Multi-Criteria Analysis of Sensor Configurations for Situational Awareness",
+        "doi": "\"10.3390/jmse13102008\""
+      },
+      {
+        "file": "paper_0016_cro.md",
+        "title": "Maritime Autonomous Surface Ships: Architecture for Autonomous Navigation Systems",
+        "doi": "\"10.3390/jmse13010122\""
+      }
+    ],
+    "created_at": "2026-04-21T03:53:56.365417",
+    "updated_at": "2026-04-21T03:53:56.365428"
+  },
+  "Collision Avoidance": {
+    "tag": "Collision Avoidance",
+    "definition_ru": "Избежание столкновений — это процесс обнаружения и предотвращения столкновений судна с другими объектами или судами в морской среде с помощью автоматизированных систем и алгоритмов.",
+    "definition_en": "Collision avoidance is the process of detecting and preventing collisions between a vessel and other objects or ships in the maritime environment using automated systems and algorithms.",
+    "context": "В области морских автономных надводных судов (MASS) системы избежания столкновений играют ключевую роль в обеспечении безопасности навигации. Они интегрируют данные с датчиков, картографические знания и алгоритмы планирования маршрута для принятия решений в реальном времени. Такие системы позволяют автономным судам эффективно реагировать на динамические изменения обстановки и минимизировать риск аварий.",
+    "related_terms": [
+      "Автономная навигация",
+      "Планирование маршрута",
+      "Датчики и сенсоры",
+      "Ситуационная осведомленность",
+      "Динамическое окно",
+      "Обнаружение препятствий"
+    ],
+    "examples": [
+      "Использование алгоритма динамического окна для локального планирования маршрута с целью избежания столкновений.",
+      "Интеграция ситуационно-осведомленных карт знаний для повышения точности систем избежания столкновений в MASS."
+    ],
+    "papers": [
+      {
+        "file": "Integrating-situation-aware-knowledge-maps.md",
+        "title": "Integrating-situation-aware-knowledge-maps.md",
+        "doi": ""
+      },
+      {
+        "file": "paper_0001_cro.md",
+        "title": "Local Route Planning for Collision Avoidance of Maritime Autonomous Surface Ships in Compliance with COLREGs Rules",
+        "doi": "\"10.3390/su14010198\""
+      },
+      {
+        "file": "paper_0002_cro.md",
+        "title": "Improved dynamic window approach for autonomous collision avoidance decision-making algorithm",
+        "doi": "\"10.1201/9781003684404-54\""
+      },
+      {
+        "file": "paper_0003_cro.md",
+        "title": "Collision avoidance on maritime autonomous surface ships",
+        "doi": "\"10.32657/10356/210717\""
+      },
+      {
+        "file": "paper_0004_cro.md",
+        "title": "Deep reinforcement learning with dynamic window approach based collision avoidance path planning for maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2023.115208\""
+      },
+      {
+        "file": "paper_0005_cro.md",
+        "title": "SWOT ANALYSIS OF LEADING SAFETY INDICATORS FOR COLLISION AVOIDANCE OF MARITIME AUTONOMOUS SURFACE SHIPS",
+        "doi": "\"10.3940/rina.as.2022.09\""
+      },
+      {
+        "file": "paper_0006_cro.md",
+        "title": "A Dynamic Programming Approach to Collision Avoidance of Autonomous Ships",
+        "doi": "\"10.20944/preprints202403.1831.v1\""
+      },
+      {
+        "file": "paper_0007_cro.md",
+        "title": "Dynamic Tabu Search for Collision Avoidance in Autonomous Maritime Ships",
+        "doi": "\"10.1109/access.2024.3419706\""
+      },
+      {
+        "file": "paper_0009_cro.md",
+        "title": "Collaborative collision avoidance for Maritime Autonomous Surface Ships: A review",
+        "doi": "\"10.1016/j.oceaneng.2022.110920\""
+      },
+      {
+        "file": "paper_0011_cro.md",
+        "title": "A Dynamic Programming Approach to the Collision Avoidance of Autonomous Ships",
+        "doi": "\"10.3390/math12101546\""
+      },
+      {
+        "file": "paper_0013_cro.md",
+        "title": "Improved DDPG algorithm-based path planning for unmanned surface vehicles",
+        "doi": "\"10.20517/ir.2024.22\""
+      },
+      {
+        "file": "paper_0016_cro.md",
+        "title": "Maritime Autonomous Surface Ships: Architecture for Autonomous Navigation Systems",
+        "doi": "\"10.3390/jmse13010122\""
+      }
+    ],
+    "created_at": "2026-04-21T03:54:05.643485",
+    "updated_at": "2026-04-21T03:54:05.643496"
+  },
+  "DWA": {
+    "tag": "DWA",
+    "definition_ru": "DWA (Dynamic Window Approach) — это алгоритм локального планирования траектории, который учитывает динамические ограничения судна для безопасного и эффективного маневрирования в реальном времени.",
+    "definition_en": "DWA (Dynamic Window Approach) is a local trajectory planning algorithm that considers the dynamic constraints of a vessel to enable safe and efficient real-time maneuvering.",
+    "context": "В области морских автономных надводных судов DWA применяется для обеспечения адаптивного и ситуационно-зависимого управления движением, позволяя судну избегать препятствий и оптимизировать маршрут с учётом текущих условий и ограничений.",
+    "related_terms": [
+      "локальное планирование траектории",
+      "динамические ограничения",
+      "автономное управление",
+      "избегание препятствий",
+      "MASS"
+    ],
+    "examples": [
+      "Использование DWA для обхода неподвижных и движущихся препятствий в реальном времени.",
+      "Интеграция DWA с ситуационно-зависимыми картами знаний для улучшения навигации MASS."
+    ],
+    "papers": [
+      {
+        "file": "Integrating-situation-aware-knowledge-maps.md",
+        "title": "Integrating-situation-aware-knowledge-maps.md",
+        "doi": ""
+      }
+    ],
+    "created_at": "2026-04-21T03:54:12.225528",
+    "updated_at": "2026-04-21T03:54:12.225539"
+  },
+  "Knowledge Maps": {
+    "tag": "Knowledge Maps",
+    "definition_ru": "Knowledge Maps — это структурированные визуальные представления знаний, которые отображают взаимосвязи между различными элементами информации в определённой области. Они помогают систематизировать и упорядочивать данные для облегчения понимания и принятия решений.",
+    "definition_en": "Knowledge Maps are structured visual representations of knowledge that illustrate relationships between different information elements within a specific domain. They aid in organizing and systematizing data to facilitate understanding and decision-making.",
+    "context": "В области морских автономных надводных судов (MASS) Knowledge Maps используются для интеграции и анализа ситуационно-зависимых данных, что позволяет улучшить осведомлённость о текущей обстановке и повысить эффективность автономного управления. Они помогают объединять разнородную информацию о морской среде, навигации и техническом состоянии судна для принятия обоснованных решений в реальном времени.",
+    "related_terms": [
+      "Ситуационная осведомлённость",
+      "Автономное управление",
+      "Интеллектуальные системы",
+      "Морская навигация",
+      "Обработка данных"
+    ],
+    "examples": [
+      "Использование Knowledge Maps для визуализации угроз и рисков в зоне плавания MASS",
+      "Применение Knowledge Maps для интеграции данных с различных сенсоров и систем судна в режиме реального времени"
+    ],
+    "papers": [
+      {
+        "file": "Integrating-situation-aware-knowledge-maps.md",
+        "title": "Integrating-situation-aware-knowledge-maps.md",
+        "doi": ""
+      }
+    ],
+    "created_at": "2026-04-21T03:54:22.349498",
+    "updated_at": "2026-04-21T03:54:22.349510"
+  },
+  "COLREGs": {
+    "tag": "COLREGs",
+    "definition_ru": "COLREGs (Международные правила предотвращения столкновений судов) — свод правил, регулирующих поведение судов на море для предотвращения столкновений. Они устанавливают нормы движения, приоритеты и сигналы между судами.",
+    "definition_en": "COLREGs (International Regulations for Preventing Collisions at Sea) are a set of rules governing vessel behavior to avoid collisions. They define navigation norms, priorities, and signaling between ships.",
+    "context": "В области морских автономных надводных судов (MASS) COLREGs используются для разработки алгоритмов планирования маршрутов и принятия решений, обеспечивающих безопасное взаимодействие автономных судов с другими морскими объектами. Соблюдение COLREGs является ключевым фактором для предотвращения аварий и обеспечения интеграции MASS в существующее морское пространство.",
+    "related_terms": [
+      "автономное судно",
+      "планирование маршрута",
+      "избежание столкновений",
+      "навигационные правила",
+      "системы обнаружения и предупреждения"
+    ],
+    "examples": [
+      "Использование COLREGs для локального планирования маршрута автономного судна.",
+      "Моделирование поведения MASS в соответствии с COLREGs для предотвращения столкновений."
+    ],
+    "papers": [
+      {
+        "file": "paper_0001_cro.md",
+        "title": "Local Route Planning for Collision Avoidance of Maritime Autonomous Surface Ships in Compliance with COLREGs Rules",
+        "doi": "\"10.3390/su14010198\""
+      }
+    ],
+    "created_at": "2026-04-21T03:54:30.780285",
+    "updated_at": "2026-04-21T03:54:30.780296"
+  },
+  "Compliance": {
+    "tag": "Compliance",
+    "definition_ru": "Compliance — это соблюдение нормативных требований, стандартов и правил, обеспечивающих безопасность и законность эксплуатации морских автономных надводных судов.",
+    "definition_en": "Compliance refers to adherence to regulatory requirements, standards, and rules that ensure the safe and lawful operation of Maritime Autonomous Surface Ships.",
+    "context": "В области MASS compliance играет ключевую роль в обеспечении безопасности навигации и предотвращении столкновений, так как автономные системы должны соответствовать международным и национальным морским нормам. Это включает в себя соблюдение правил Коллизии (COLREGs), стандартов безопасности и требований к программному обеспечению автономных судов.",
+    "related_terms": [
+      "COLREGs",
+      "Collision Avoidance",
+      "Safety Standards",
+      "Regulatory Compliance",
+      "Autonomous Navigation"
+    ],
+    "examples": [
+      "Соблюдение COLREGs для предотвращения столкновений в локальном маршруте автономного судна.",
+      "Анализ соответствия систем автономного судна международным стандартам безопасности."
+    ],
+    "papers": [
+      {
+        "file": "paper_0001_cro.md",
+        "title": "Local Route Planning for Collision Avoidance of Maritime Autonomous Surface Ships in Compliance with COLREGs Rules",
+        "doi": "\"10.3390/su14010198\""
+      },
+      {
+        "file": "paper_0005_cro.md",
+        "title": "SWOT ANALYSIS OF LEADING SAFETY INDICATORS FOR COLLISION AVOIDANCE OF MARITIME AUTONOMOUS SURFACE SHIPS",
+        "doi": "\"10.3940/rina.as.2022.09\""
+      },
+      {
+        "file": "paper_0015_cro.md",
+        "title": "Deploying Efficient LLM Agents on Maritime Autonomous Surface Ships: Fine-Tuning, RAG, and Function Calling in a Mid-Size Model",
+        "doi": "\"10.3390/info17030284\""
+      }
+    ],
+    "created_at": "2026-04-21T03:54:38.061938",
+    "updated_at": "2026-04-21T03:54:38.061948"
+  },
+  "Decision Making": {
+    "tag": "Decision Making",
+    "definition_ru": "Принятие решений — процесс выбора оптимального действия или маршрута на основе анализа текущей ситуации и доступной информации для обеспечения безопасности и эффективности движения автономного надводного судна.",
+    "definition_en": "Decision making is the process of selecting the optimal action or route based on the analysis of the current situation and available information to ensure the safety and efficiency of an autonomous surface ship's navigation.",
+    "context": "В области морских автономных надводных судов (MASS) принятие решений играет ключевую роль в задачах предотвращения столкновений и планирования маршрута. Используются методы глубокого обучения, динамического программирования и локального планирования для адаптивного выбора безопасных и эффективных траекторий движения.",
+    "related_terms": [
+      "Collision Avoidance",
+      "Route Planning",
+      "Autonomous Navigation",
+      "Dynamic Programming",
+      "Reinforcement Learning"
+    ],
+    "examples": [
+      "Использование глубокого обучения для принятия решений при маневрировании в условиях плотного трафика.",
+      "Применение динамического программирования для выбора оптимального маршрута с учетом возможных столкновений."
+    ],
+    "papers": [
+      {
+        "file": "paper_0001_cro.md",
+        "title": "Local Route Planning for Collision Avoidance of Maritime Autonomous Surface Ships in Compliance with COLREGs Rules",
+        "doi": "\"10.3390/su14010198\""
+      },
+      {
+        "file": "paper_0004_cro.md",
+        "title": "Deep reinforcement learning with dynamic window approach based collision avoidance path planning for maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2023.115208\""
+      },
+      {
+        "file": "paper_0006_cro.md",
+        "title": "A Dynamic Programming Approach to Collision Avoidance of Autonomous Ships",
+        "doi": "\"10.20944/preprints202403.1831.v1\""
+      },
+      {
+        "file": "paper_0010_cro.md",
+        "title": "Integrating situation-aware knowledge maps and dynamic window approach for safe path planning by maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2024.118882\""
+      },
+      {
+        "file": "paper_0011_cro.md",
+        "title": "A Dynamic Programming Approach to the Collision Avoidance of Autonomous Ships",
+        "doi": "\"10.3390/math12101546\""
+      },
+      {
+        "file": "paper_0013_cro.md",
+        "title": "Improved DDPG algorithm-based path planning for unmanned surface vehicles",
+        "doi": "\"10.20517/ir.2024.22\""
+      },
+      {
+        "file": "paper_0015_cro.md",
+        "title": "Deploying Efficient LLM Agents on Maritime Autonomous Surface Ships: Fine-Tuning, RAG, and Function Calling in a Mid-Size Model",
+        "doi": "\"10.3390/info17030284\""
+      }
+    ],
+    "created_at": "2026-04-21T03:54:44.425671",
+    "updated_at": "2026-04-21T03:54:44.425683"
+  },
+  "Dynamic Window Approach": {
+    "tag": "Dynamic Window Approach",
+    "definition_ru": "Dynamic Window Approach (DWA) — это метод локального планирования траектории для автономных транспортных средств, основанный на оценке допустимых скоростей и ускорений с целью безопасного и эффективного обхода препятствий в реальном времени.",
+    "definition_en": "Dynamic Window Approach (DWA) is a local trajectory planning method for autonomous vehicles that evaluates feasible velocities and accelerations to safely and efficiently avoid obstacles in real-time.",
+    "context": "В области морских автономных надводных судов (MASS) DWA используется для локального планирования маршрута с целью предотвращения столкновений с другими судами и препятствиями. Метод позволяет учитывать динамические ограничения судна и изменяющиеся условия окружающей среды, обеспечивая адаптивное и безопасное маневрирование в сложных морских ситуациях.",
+    "related_terms": [
+      "локальное планирование маршрута",
+      "избежание столкновений",
+      "автономное управление",
+      "динамические ограничения",
+      "маршрутизация",
+      "обход препятствий"
+    ],
+    "examples": [
+      "Использование DWA для локального планирования маршрута при обходе неподвижных и движущихся препятствий на море.",
+      "Интеграция DWA с алгоритмами глубокого обучения для улучшения решений по предотвращению столкновений в MASS."
+    ],
+    "papers": [
+      {
+        "file": "paper_0001_cro.md",
+        "title": "Local Route Planning for Collision Avoidance of Maritime Autonomous Surface Ships in Compliance with COLREGs Rules",
+        "doi": "\"10.3390/su14010198\""
+      },
+      {
+        "file": "paper_0002_cro.md",
+        "title": "Improved dynamic window approach for autonomous collision avoidance decision-making algorithm",
+        "doi": "\"10.1201/9781003684404-54\""
+      },
+      {
+        "file": "paper_0004_cro.md",
+        "title": "Deep reinforcement learning with dynamic window approach based collision avoidance path planning for maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2023.115208\""
+      },
+      {
+        "file": "paper_0010_cro.md",
+        "title": "Integrating situation-aware knowledge maps and dynamic window approach for safe path planning by maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2024.118882\""
+      },
+      {
+        "file": "paper_0015_cro.md",
+        "title": "Deploying Efficient LLM Agents on Maritime Autonomous Surface Ships: Fine-Tuning, RAG, and Function Calling in a Mid-Size Model",
+        "doi": "\"10.3390/info17030284\""
+      }
+    ],
+    "created_at": "2026-04-21T03:54:51.035088",
+    "updated_at": "2026-04-21T03:54:51.035099"
+  },
+  "Fuzzy Logic": {
+    "tag": "Fuzzy Logic",
+    "definition_ru": "Нечеткая логика — это метод обработки информации, основанный на многозначных логических значениях, позволяющий моделировать неопределенность и нечёткость в принятии решений.",
+    "definition_en": "Fuzzy logic is an information processing method based on multi-valued logic, enabling the modeling of uncertainty and imprecision in decision-making.",
+    "context": "В области морских автономных надводных судов (MASS) нечеткая логика применяется для локального планирования маршрутов и предотвращения столкновений, позволяя учитывать неопределённые и изменяющиеся условия окружающей среды и поведения других судов.",
+    "related_terms": [
+      "автономное судно",
+      "планирование маршрута",
+      "принятие решений",
+      "искусственный интеллект",
+      "обработка неопределённости"
+    ],
+    "examples": [
+      "Использование нечеткой логики для оценки риска столкновения при изменении курса судна.",
+      "Применение нечетких правил для адаптивного управления скоростью и направлением автономного судна в сложных морских условиях."
+    ],
+    "papers": [
+      {
+        "file": "paper_0001_cro.md",
+        "title": "Local Route Planning for Collision Avoidance of Maritime Autonomous Surface Ships in Compliance with COLREGs Rules",
+        "doi": "\"10.3390/su14010198\""
+      }
+    ],
+    "created_at": "2026-04-21T03:54:58.894412",
+    "updated_at": "2026-04-21T03:54:58.894423"
+  },
+  "Genetic Algorithm": {
+    "tag": "Genetic Algorithm",
+    "definition_ru": "Генетический алгоритм — это метод оптимизации и поиска решений, основанный на принципах естественного отбора и генетики, имитирующий процесс эволюции популяции возможных решений.",
+    "definition_en": "A genetic algorithm is an optimization and search method inspired by natural selection and genetics, simulating the evolutionary process of a population of candidate solutions.",
+    "context": "В области морских автономных надводных судов (MASS) генетические алгоритмы применяются для решения задач планирования маршрутов и предотвращения столкновений, обеспечивая эффективный поиск оптимальных путей движения в динамической и неопределённой среде.",
+    "related_terms": [
+      "оптимизация",
+      "эвристические методы",
+      "планирование маршрута",
+      "избежание столкновений",
+      "динамическое программирование"
+    ],
+    "examples": [
+      "Использование генетического алгоритма для локального планирования маршрута с учётом препятствий и движущихся объектов.",
+      "Применение генетического алгоритма для оптимизации параметров системы предотвращения столкновений в автономных судах."
+    ],
+    "papers": [
+      {
+        "file": "paper_0001_cro.md",
+        "title": "Local Route Planning for Collision Avoidance of Maritime Autonomous Surface Ships in Compliance with COLREGs Rules",
+        "doi": "\"10.3390/su14010198\""
+      },
+      {
+        "file": "paper_0005_cro.md",
+        "title": "SWOT ANALYSIS OF LEADING SAFETY INDICATORS FOR COLLISION AVOIDANCE OF MARITIME AUTONOMOUS SURFACE SHIPS",
+        "doi": "\"10.3940/rina.as.2022.09\""
+      },
+      {
+        "file": "paper_0006_cro.md",
+        "title": "A Dynamic Programming Approach to Collision Avoidance of Autonomous Ships",
+        "doi": "\"10.20944/preprints202403.1831.v1\""
+      },
+      {
+        "file": "paper_0011_cro.md",
+        "title": "A Dynamic Programming Approach to the Collision Avoidance of Autonomous Ships",
+        "doi": "\"10.3390/math12101546\""
+      },
+      {
+        "file": "paper_0012_cro.md",
+        "title": "Scenario-Based Sensor Selection for Autonomous Maritime Systems: A Multi-Criteria Analysis of Sensor Configurations for Situational Awareness",
+        "doi": "\"10.3390/jmse13102008\""
+      },
+      {
+        "file": "paper_0013_cro.md",
+        "title": "Improved DDPG algorithm-based path planning for unmanned surface vehicles",
+        "doi": "\"10.20517/ir.2024.22\""
+      },
+      {
+        "file": "paper_0015_cro.md",
+        "title": "Deploying Efficient LLM Agents on Maritime Autonomous Surface Ships: Fine-Tuning, RAG, and Function Calling in a Mid-Size Model",
+        "doi": "\"10.3390/info17030284\""
+      },
+      {
+        "file": "paper_0016_cro.md",
+        "title": "Maritime Autonomous Surface Ships: Architecture for Autonomous Navigation Systems",
+        "doi": "\"10.3390/jmse13010122\""
+      }
+    ],
+    "created_at": "2026-04-21T03:55:05.194593",
+    "updated_at": "2026-04-21T03:55:05.194604"
+  },
+  "MASS": {
+    "tag": "MASS",
+    "definition_ru": "MASS (морские автономные надводные суда) — это суда, способные выполнять навигацию и операции без постоянного участия человека на борту, используя автоматизированные системы управления и сенсоры.",
+    "definition_en": "MASS (Maritime Autonomous Surface Ships) are vessels capable of navigating and operating without continuous human intervention on board, utilizing automated control systems and sensors.",
+    "context": "В области MASS основное внимание уделяется разработке алгоритмов автономного управления, включая планирование маршрутов и предотвращение столкновений. Такие суда применяются для повышения безопасности, эффективности и снижения затрат в морской навигации. В научных исследованиях часто рассматриваются методы машинного обучения и алгоритмы динамического окна для обеспечения безопасного движения MASS.",
+    "related_terms": [
+      "автономное управление",
+      "система предотвращения столкновений",
+      "планирование маршрута",
+      "глубокое обучение",
+      "динамическое окно",
+      "сенсорные системы"
+    ],
+    "examples": [
+      "Local Route Planning for Collision Avoidance of Maritime Autonomous Surface Ship",
+      "Collision avoidance on maritime autonomous surface ships",
+      "Deep reinforcement learning with dynamic window approach based collision avoidance"
+    ],
+    "papers": [
+      {
+        "file": "paper_0001_cro.md",
+        "title": "Local Route Planning for Collision Avoidance of Maritime Autonomous Surface Ships in Compliance with COLREGs Rules",
+        "doi": "\"10.3390/su14010198\""
+      },
+      {
+        "file": "paper_0003_cro.md",
+        "title": "Collision avoidance on maritime autonomous surface ships",
+        "doi": "\"10.32657/10356/210717\""
+      },
+      {
+        "file": "paper_0004_cro.md",
+        "title": "Deep reinforcement learning with dynamic window approach based collision avoidance path planning for maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2023.115208\""
+      },
+      {
+        "file": "paper_0005_cro.md",
+        "title": "SWOT ANALYSIS OF LEADING SAFETY INDICATORS FOR COLLISION AVOIDANCE OF MARITIME AUTONOMOUS SURFACE SHIPS",
+        "doi": "\"10.3940/rina.as.2022.09\""
+      },
+      {
+        "file": "paper_0008_cro.md",
+        "title": "Constructing Knowledge Maps for Situation Awareness of Maritime Autonomous Surface Ships",
+        "doi": "\"10.24868/10722\""
+      },
+      {
+        "file": "paper_0009_cro.md",
+        "title": "Collaborative collision avoidance for Maritime Autonomous Surface Ships: A review",
+        "doi": "\"10.1016/j.oceaneng.2022.110920\""
+      },
+      {
+        "file": "paper_0010_cro.md",
+        "title": "Integrating situation-aware knowledge maps and dynamic window approach for safe path planning by maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2024.118882\""
+      },
+      {
+        "file": "paper_0015_cro.md",
+        "title": "Deploying Efficient LLM Agents on Maritime Autonomous Surface Ships: Fine-Tuning, RAG, and Function Calling in a Mid-Size Model",
+        "doi": "\"10.3390/info17030284\""
+      },
+      {
+        "file": "paper_0016_cro.md",
+        "title": "Maritime Autonomous Surface Ships: Architecture for Autonomous Navigation Systems",
+        "doi": "\"10.3390/jmse13010122\""
+      }
+    ],
+    "created_at": "2026-04-21T03:55:11.723488",
+    "updated_at": "2026-04-21T03:55:11.723499"
+  },
+  "Path Planning": {
+    "tag": "Path Planning",
+    "definition_ru": "Планирование пути (Path Planning) — процесс определения оптимального маршрута движения автономного надводного судна с учётом ограничений и препятствий для обеспечения безопасного и эффективного плавания.",
+    "definition_en": "Path Planning is the process of determining an optimal navigation route for an autonomous surface vessel, considering constraints and obstacles to ensure safe and efficient travel.",
+    "context": "В области морских автономных надводных судов планирование пути используется для локального и глобального построения маршрутов, позволяя избегать столкновений с другими судами и препятствиями. Методы планирования пути часто интегрируются с системами обнаружения и оценки ситуации, а также с алгоритмами управления движением, такими как динамическое окно и методы глубокого обучения.",
+    "related_terms": [
+      "Collision Avoidance",
+      "Dynamic Window Approach",
+      "Autonomous Navigation",
+      "Obstacle Detection",
+      "Reinforcement Learning"
+    ],
+    "examples": [
+      "Локальное планирование маршрута для предотвращения столкновений с другими судами.",
+      "Использование глубокого обучения совместно с динамическим окном для адаптивного изменения пути в реальном времени."
+    ],
+    "papers": [
+      {
+        "file": "paper_0001_cro.md",
+        "title": "Local Route Planning for Collision Avoidance of Maritime Autonomous Surface Ships in Compliance with COLREGs Rules",
+        "doi": "\"10.3390/su14010198\""
+      },
+      {
+        "file": "paper_0004_cro.md",
+        "title": "Deep reinforcement learning with dynamic window approach based collision avoidance path planning for maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2023.115208\""
+      },
+      {
+        "file": "paper_0010_cro.md",
+        "title": "Integrating situation-aware knowledge maps and dynamic window approach for safe path planning by maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2024.118882\""
+      },
+      {
+        "file": "paper_0013_cro.md",
+        "title": "Improved DDPG algorithm-based path planning for unmanned surface vehicles",
+        "doi": "\"10.20517/ir.2024.22\""
+      }
+    ],
+    "created_at": "2026-04-21T03:55:18.706338",
+    "updated_at": "2026-04-21T03:55:18.706348"
+  },
+  "Safety": {
+    "tag": "Safety",
+    "definition_ru": "Safety — состояние защищённости судна, экипажа и окружающей среды от аварий, повреждений и опасных ситуаций во время эксплуатации морских автономных надводных судов.",
+    "definition_en": "Safety is the condition of being protected from accidents, damage, and hazardous situations during the operation of maritime autonomous surface ships.",
+    "context": "В области MASS безопасность включает предотвращение столкновений, обеспечение надежного функционирования систем автономного управления и минимизацию рисков для судна и окружающей среды. Это ключевой аспект при разработке алгоритмов локального планирования маршрутов и оценки показателей безопасности для предотвращения аварийных ситуаций.",
+    "related_terms": [
+      "Collision Avoidance",
+      "Risk Assessment",
+      "Autonomous Navigation",
+      "Safety Indicators",
+      "Route Planning"
+    ],
+    "examples": [
+      "Использование локального планирования маршрутов для повышения безопасности при автономном движении судна.",
+      "Анализ ведущих показателей безопасности для предотвращения столкновений в системах MASS."
+    ],
+    "papers": [
+      {
+        "file": "paper_0001_cro.md",
+        "title": "Local Route Planning for Collision Avoidance of Maritime Autonomous Surface Ships in Compliance with COLREGs Rules",
+        "doi": "\"10.3390/su14010198\""
+      },
+      {
+        "file": "paper_0005_cro.md",
+        "title": "SWOT ANALYSIS OF LEADING SAFETY INDICATORS FOR COLLISION AVOIDANCE OF MARITIME AUTONOMOUS SURFACE SHIPS",
+        "doi": "\"10.3940/rina.as.2022.09\""
+      }
+    ],
+    "created_at": "2026-04-21T03:55:23.867765",
+    "updated_at": "2026-04-21T03:55:23.867776"
+  },
+  "Deep Reinforcement Learning": {
+    "tag": "Deep Reinforcement Learning",
+    "definition_ru": "Глубокое подкрепляющее обучение — метод машинного обучения, объединяющий глубокие нейронные сети и алгоритмы обучения с подкреплением для принятия решений в сложных средах. Оно позволяет агенту учиться оптимальной стратегии поведения на основе взаимодействия с окружающей средой и получаемых наград.",
+    "definition_en": "Deep Reinforcement Learning is a machine learning approach combining deep neural networks with reinforcement learning algorithms to make decisions in complex environments. It enables an agent to learn optimal policies through interaction with the environment and reward feedback.",
+    "context": "В области морских автономных надводных судов (MASS) глубокое подкрепляющее обучение применяется для решения задач планирования маршрутов и предотвращения столкновений. Использование таких методов позволяет автономным судам адаптивно реагировать на динамические изменения в морской обстановке и обеспечивать безопасное и эффективное движение.",
+    "related_terms": [
+      "обучение с подкреплением",
+      "глубокие нейронные сети",
+      "планирование маршрута",
+      "избегание столкновений",
+      "автономные надводные суда"
+    ],
+    "examples": [
+      "Deep reinforcement learning with dynamic window approach based collision avoidance",
+      "Improved DDPG algorithm-based path planning for unmanned surface vehicles"
+    ],
+    "papers": [
+      {
+        "file": "paper_0004_cro.md",
+        "title": "Deep reinforcement learning with dynamic window approach based collision avoidance path planning for maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2023.115208\""
+      },
+      {
+        "file": "paper_0013_cro.md",
+        "title": "Improved DDPG algorithm-based path planning for unmanned surface vehicles",
+        "doi": "\"10.20517/ir.2024.22\""
+      }
+    ],
+    "created_at": "2026-04-21T03:55:31.529780",
+    "updated_at": "2026-04-21T03:55:31.529791"
+  },
+  "Reinforcement Learning": {
+    "tag": "Reinforcement Learning",
+    "definition_ru": "Обучение с подкреплением — это метод машинного обучения, при котором агент учится принимать решения, максимизируя суммарное вознаграждение через взаимодействие с окружающей средой.",
+    "definition_en": "Reinforcement learning is a machine learning approach where an agent learns to make decisions by maximizing cumulative rewards through interaction with the environment.",
+    "context": "В области морских автономных надводных судов (MASS) обучение с подкреплением применяется для разработки алгоритмов автономного управления, таких как планирование маршрутов и избегание столкновений. Использование методов глубокого обучения с подкреплением позволяет улучшить адаптивность и эффективность навигационных систем в динамичных морских условиях.",
+    "related_terms": [
+      "глубокое обучение",
+      "DDPG",
+      "планирование маршрута",
+      "избегание столкновений",
+      "агент",
+      "вознаграждение"
+    ],
+    "examples": [
+      "Deep reinforcement learning with dynamic window approach based collision avoidance для предотвращения столкновений судов.",
+      "Improved DDPG algorithm-based path planning для оптимизации маршрутов автономных надводных судов."
+    ],
+    "papers": [
+      {
+        "file": "paper_0004_cro.md",
+        "title": "Deep reinforcement learning with dynamic window approach based collision avoidance path planning for maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2023.115208\""
+      },
+      {
+        "file": "paper_0013_cro.md",
+        "title": "Improved DDPG algorithm-based path planning for unmanned surface vehicles",
+        "doi": "\"10.20517/ir.2024.22\""
+      }
+    ],
+    "created_at": "2026-04-21T03:55:39.588882",
+    "updated_at": "2026-04-21T03:55:39.588896"
+  },
+  "Trajectory Planning": {
+    "tag": "Trajectory Planning",
+    "definition_ru": "Планирование траектории — процесс определения оптимального пути движения автономного надводного судна с учётом динамических ограничений и препятствий. Оно обеспечивает безопасное и эффективное перемещение судна в заданной среде.",
+    "definition_en": "Trajectory planning is the process of determining an optimal path for an autonomous surface vessel considering dynamic constraints and obstacles. It ensures safe and efficient navigation within the operational environment.",
+    "context": "В области морских автономных надводных судов (MASS) планирование траектории используется для обеспечения безопасного обхода препятствий и адаптации к изменяющимся условиям окружающей среды. Современные методы, такие как глубокое обучение с подкреплением и алгоритмы динамического окна, применяются для улучшения качества и надёжности траекторий.",
+    "related_terms": [
+      "Collision Avoidance",
+      "Dynamic Window Approach",
+      "Path Planning",
+      "Deep Reinforcement Learning",
+      "Unmanned Surface Vehicles"
+    ],
+    "examples": [
+      "Использование алгоритма DDPG для улучшенного планирования траектории беспилотного судна",
+      "Применение динамического окна для предотвращения столкновений при построении траектории"
+    ],
+    "papers": [
+      {
+        "file": "paper_0004_cro.md",
+        "title": "Deep reinforcement learning with dynamic window approach based collision avoidance path planning for maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2023.115208\""
+      },
+      {
+        "file": "paper_0010_cro.md",
+        "title": "Integrating situation-aware knowledge maps and dynamic window approach for safe path planning by maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2024.118882\""
+      },
+      {
+        "file": "paper_0013_cro.md",
+        "title": "Improved DDPG algorithm-based path planning for unmanned surface vehicles",
+        "doi": "\"10.20517/ir.2024.22\""
+      }
+    ],
+    "created_at": "2026-04-21T03:55:46.488476",
+    "updated_at": "2026-04-21T03:55:46.488487"
+  },
+  "User Interface": {
+    "tag": "User Interface",
+    "definition_ru": "Пользовательский интерфейс (User Interface) — это совокупность средств и методов взаимодействия человека с системой управления автономным надводным судном, обеспечивающая ввод команд и получение информации о состоянии судна и окружающей среды.",
+    "definition_en": "User Interface is the set of tools and methods enabling human interaction with the autonomous surface vessel's control system, allowing command input and feedback on the vessel's status and environment.",
+    "context": "В области морских автономных надводных судов пользовательский интерфейс играет ключевую роль в обеспечении безопасного и эффективного управления, особенно при реализации систем предотвращения столкновений. Он позволяет оператору контролировать и корректировать действия судна, а также получать важные данные о навигационной обстановке и предупреждениях безопасности.",
+    "related_terms": [
+      "автономное судно",
+      "система предотвращения столкновений",
+      "человеко-машинный интерфейс",
+      "система управления",
+      "навигационные данные"
+    ],
+    "examples": [
+      "Интерфейс оператора для мониторинга и управления маневрами судна при обходе препятствий",
+      "Визуализация предупреждений о рисках столкновения на экране пользователя"
+    ],
+    "papers": [
+      {
+        "file": "paper_0005_cro.md",
+        "title": "SWOT ANALYSIS OF LEADING SAFETY INDICATORS FOR COLLISION AVOIDANCE OF MARITIME AUTONOMOUS SURFACE SHIPS",
+        "doi": "\"10.3940/rina.as.2022.09\""
+      },
+      {
+        "file": "paper_0006_cro.md",
+        "title": "A Dynamic Programming Approach to Collision Avoidance of Autonomous Ships",
+        "doi": "\"10.20944/preprints202403.1831.v1\""
+      },
+      {
+        "file": "paper_0011_cro.md",
+        "title": "A Dynamic Programming Approach to the Collision Avoidance of Autonomous Ships",
+        "doi": "\"10.3390/math12101546\""
+      },
+      {
+        "file": "paper_0012_cro.md",
+        "title": "Scenario-Based Sensor Selection for Autonomous Maritime Systems: A Multi-Criteria Analysis of Sensor Configurations for Situational Awareness",
+        "doi": "\"10.3390/jmse13102008\""
+      },
+      {
+        "file": "paper_0014_cro.md",
+        "title": "Effectiveness of Attention Mechanisms in YOLOv8 for Maritime Vessel Detection",
+        "doi": "\"10.3390/jmse14050433\""
+      },
+      {
+        "file": "paper_0015_cro.md",
+        "title": "Deploying Efficient LLM Agents on Maritime Autonomous Surface Ships: Fine-Tuning, RAG, and Function Calling in a Mid-Size Model",
+        "doi": "\"10.3390/info17030284\""
+      }
+    ],
+    "created_at": "2026-04-21T03:55:55.583532",
+    "updated_at": "2026-04-21T03:55:55.583544"
+  },
+  "Obstacle Avoidance": {
+    "tag": "Obstacle Avoidance",
+    "definition_ru": "Обход препятствий — это процесс обнаружения и маневрирования вокруг объектов или опасностей на пути автономного надводного судна для предотвращения столкновений. Он включает в себя планирование маршрута и принятие решений в реальном времени с учетом динамической обстановки.",
+    "definition_en": "Obstacle avoidance is the process of detecting and maneuvering around objects or hazards in the path of an autonomous surface vessel to prevent collisions. It involves route planning and real-time decision-making considering dynamic environments.",
+    "context": "В области морских автономных надводных судов (MASS) обход препятствий является ключевой задачей для обеспечения безопасности навигации. Алгоритмы обхода препятствий интегрируются с системами планирования маршрута и управления движением, позволяя автономным судам адаптироваться к изменяющимся условиям и избегать столкновений с другими судами, буями и природными объектами.",
+    "related_terms": [
+      "Collision Avoidance",
+      "Path Planning",
+      "Dynamic Programming",
+      "Autonomous Navigation",
+      "Sensor Fusion"
+    ],
+    "examples": [
+      "Использование алгоритма динамического программирования для обхода препятствий на автономном судне",
+      "Применение улучшенного DDPG-алгоритма для планирования пути с учетом обхода препятствий у беспилотных надводных судов"
+    ],
+    "papers": [
+      {
+        "file": "paper_0006_cro.md",
+        "title": "A Dynamic Programming Approach to Collision Avoidance of Autonomous Ships",
+        "doi": "\"10.20944/preprints202403.1831.v1\""
+      },
+      {
+        "file": "paper_0011_cro.md",
+        "title": "A Dynamic Programming Approach to the Collision Avoidance of Autonomous Ships",
+        "doi": "\"10.3390/math12101546\""
+      },
+      {
+        "file": "paper_0013_cro.md",
+        "title": "Improved DDPG algorithm-based path planning for unmanned surface vehicles",
+        "doi": "\"10.20517/ir.2024.22\""
+      }
+    ],
+    "created_at": "2026-04-21T03:56:03.063331",
+    "updated_at": "2026-04-21T03:56:03.063341"
+  },
+  "Knowledge Representation": {
+    "tag": "Knowledge Representation",
+    "definition_ru": "Представление знаний — это способ структурирования и организации информации для моделирования и понимания сложных ситуаций, обеспечивающий эффективный доступ и обработку данных. В контексте автономных систем это позволяет формализовать знания о морской обстановке и поведении судов.",
+    "definition_en": "Knowledge representation is the method of structuring and organizing information to model and understand complex situations, enabling efficient data access and processing. In autonomous systems, it formalizes knowledge about the maritime environment and vessel behavior.",
+    "context": "В морских автономных надводных судах (MASS) представление знаний используется для создания карт знаний, которые повышают ситуационную осведомленность и безопасность навигации. Это позволяет интегрировать данные с различных сенсоров и алгоритмов, таких как методы обнаружения судов и планирования траекторий, для принятия обоснованных решений в реальном времени.",
+    "related_terms": [
+      "Ситуационная осведомленность",
+      "Карта знаний",
+      "Обнаружение объектов",
+      "Планирование траектории",
+      "Машинное обучение"
+    ],
+    "examples": [
+      "Использование карт знаний для оценки морской обстановки в реальном времени",
+      "Интеграция представления знаний с алгоритмами обнаружения судов на основе YOLOv8"
+    ],
+    "papers": [
+      {
+        "file": "paper_0008_cro.md",
+        "title": "Constructing Knowledge Maps for Situation Awareness of Maritime Autonomous Surface Ships",
+        "doi": "\"10.24868/10722\""
+      },
+      {
+        "file": "paper_0010_cro.md",
+        "title": "Integrating situation-aware knowledge maps and dynamic window approach for safe path planning by maritime autonomous surface ships",
+        "doi": "\"10.1016/j.oceaneng.2024.118882\""
+      },
+      {
+        "file": "paper_0014_cro.md",
+        "title": "Effectiveness of Attention Mechanisms in YOLOv8 for Maritime Vessel Detection",
+        "doi": "\"10.3390/jmse14050433\""
+      },
+      {
+        "file": "paper_0015_cro.md",
+        "title": "Deploying Efficient LLM Agents on Maritime Autonomous Surface Ships: Fine-Tuning, RAG, and Function Calling in a Mid-Size Model",
+        "doi": "\"10.3390/info17030284\""
+      }
+    ],
+    "created_at": "2026-04-21T03:56:10.777861",
+    "updated_at": "2026-04-21T03:56:10.777883"
+  },
+  "Perception": {
+    "tag": "Perception",
+    "definition_ru": "Восприятие — это процесс сбора и обработки данных с сенсоров для формирования представления об окружающей морской обстановке автономным надводным судном.",
+    "definition_en": "Perception is the process of collecting and processing sensor data to create an understanding of the surrounding maritime environment for an autonomous surface vessel.",
+    "context": "В MASS восприятие играет ключевую роль в обеспечении безопасной навигации и принятия решений, позволяя системе обнаруживать, классифицировать и отслеживать объекты на воде. Используются различные сенсоры и алгоритмы, включая методы компьютерного зрения и машинного обучения, для повышения точности и надежности восприятия в сложных морских условиях.",
+    "related_terms": [
+      "сенсоры",
+      "обнаружение объектов",
+      "классификация",
+      "обработка данных",
+      "автономная навигация",
+      "машинное обучение",
+      "компьютерное зрение"
+    ],
+    "examples": [
+      "Использование YOLOv8 для обнаружения морских судов в режиме реального времени",
+      "Выбор сенсоров на основе сценариев для оптимизации восприятия в различных условиях"
+    ],
+    "papers": [
+      {
+        "file": "paper_0012_cro.md",
+        "title": "Scenario-Based Sensor Selection for Autonomous Maritime Systems: A Multi-Criteria Analysis of Sensor Configurations for Situational Awareness",
+        "doi": "\"10.3390/jmse13102008\""
+      },
+      {
+        "file": "paper_0014_cro.md",
+        "title": "Effectiveness of Attention Mechanisms in YOLOv8 for Maritime Vessel Detection",
+        "doi": "\"10.3390/jmse14050433\""
+      },
+      {
+        "file": "paper_0016_cro.md",
+        "title": "Maritime Autonomous Surface Ships: Architecture for Autonomous Navigation Systems",
+        "doi": "\"10.3390/jmse13010122\""
+      }
+    ],
+    "created_at": "2026-04-21T03:56:19.492526",
+    "updated_at": "2026-04-21T03:56:19.492537"
+  },
+  "Digital Twin": {
+    "tag": "Digital Twin",
+    "definition_ru": "Цифровой двойник — это виртуальная модель физического объекта или системы, которая отражает их состояние и поведение в реальном времени с помощью данных и симуляций.",
+    "definition_en": "A digital twin is a virtual model of a physical object or system that reflects its state and behavior in real time through data and simulations.",
+    "context": "В области морских автономных надводных судов (MASS) цифровой двойник используется для моделирования и оптимизации работы автономных систем, включая планирование маршрутов и управление движением. Это позволяет повысить эффективность и безопасность эксплуатации судов за счет прогнозирования и анализа различных сценариев в виртуальной среде.",
+    "related_terms": [
+      "автономное судно",
+      "планирование маршрута",
+      "искусственный интеллект",
+      "моделирование",
+      "система управления",
+      "обучение с подкреплением"
+    ],
+    "examples": [
+      "Использование цифрового двойника для тестирования алгоритмов планирования пути на основе улучшенного DDPG.",
+      "Моделирование поведения автономного судна в различных погодных условиях с помощью цифрового двойника."
+    ],
+    "papers": [
+      {
+        "file": "paper_0013_cro.md",
+        "title": "Improved DDPG algorithm-based path planning for unmanned surface vehicles",
+        "doi": "\"10.20517/ir.2024.22\""
+      }
+    ],
+    "created_at": "2026-04-21T03:56:27.032470",
+    "updated_at": "2026-04-21T03:56:27.032480"
+  },
+  "Simulation": {
+    "tag": "Simulation",
+    "definition_ru": "Симуляция — это процесс создания и использования компьютерных моделей для имитации поведения морских автономных надводных судов в различных условиях и сценариях. Она позволяет тестировать алгоритмы управления и навигации без необходимости физического запуска судна.",
+    "definition_en": "Simulation is the process of creating and using computer models to imitate the behavior of maritime autonomous surface ships under various conditions and scenarios. It enables testing of control and navigation algorithms without the need for physical deployment.",
+    "context": "В области морских автономных надводных судов симуляция применяется для разработки и проверки алгоритмов планирования маршрута, таких как улучшенный алгоритм DDPG, позволяющий оптимизировать движение беспилотных судов. Это снижает риски и затраты, связанные с экспериментами в реальных условиях.",
+    "related_terms": [
+      "DDPG алгоритм",
+      "планирование маршрута",
+      "автономное управление",
+      "моделирование",
+      "тестирование алгоритмов"
+    ],
+    "examples": [
+      "Использование симуляции для проверки алгоритма планирования пути беспилотного судна.",
+      "Моделирование взаимодействия нескольких автономных надводных судов в сложных морских условиях."
+    ],
+    "papers": [
+      {
+        "file": "paper_0013_cro.md",
+        "title": "Improved DDPG algorithm-based path planning for unmanned surface vehicles",
+        "doi": "\"10.20517/ir.2024.22\""
+      }
+    ],
+    "created_at": "2026-04-21T03:56:33.857784",
+    "updated_at": "2026-04-21T03:56:33.857794"
+  },
+  "Fault Tolerance": {
+    "tag": "Fault Tolerance",
+    "definition_ru": "Отказоустойчивость — способность системы продолжать корректно функционировать при возникновении сбоев или ошибок в её компонентах. Это обеспечивает надежность и безопасность работы автономных систем.",
+    "definition_en": "Fault tolerance is the ability of a system to continue operating correctly in the event of failures or errors in its components. It ensures the reliability and safety of autonomous systems.",
+    "context": "В области морских автономных надводных судов отказоустойчивость критична для обеспечения бесперебойной работы систем обнаружения, навигации и управления. Например, в системах распознавания объектов, таких как YOLOv8, отказоустойчивость помогает сохранять точность и стабильность работы при возможных сбоях сенсоров или вычислительных модулей.",
+    "related_terms": [
+      "Надежность",
+      "Резервирование",
+      "Обработка ошибок",
+      "Автономность",
+      "Системы обнаружения"
+    ],
+    "examples": [
+      "Использование резервных сенсоров для поддержания работы системы при отказе основного датчика.",
+      "Применение алгоритмов обработки ошибок в модели YOLOv8 для устойчивости к шуму и потерям данных."
+    ],
+    "papers": [
+      {
+        "file": "paper_0014_cro.md",
+        "title": "Effectiveness of Attention Mechanisms in YOLOv8 for Maritime Vessel Detection",
+        "doi": "\"10.3390/jmse14050433\""
+      }
+    ],
+    "created_at": "2026-04-21T03:56:40.999597",
+    "updated_at": "2026-04-21T03:56:40.999611"
+  },
+  "Optimization Algorithm": {
+    "tag": "Optimization Algorithm",
+    "definition_ru": "Оптимизационный алгоритм — это метод или набор правил, используемых для поиска наилучшего решения задачи среди множества возможных вариантов с целью максимизации или минимизации заданной функции.",
+    "definition_en": "An optimization algorithm is a method or set of rules used to find the best solution to a problem among many possible options, aiming to maximize or minimize a given function.",
+    "context": "В области морских автономных надводных судов (MASS) оптимизационные алгоритмы применяются для улучшения работы систем обнаружения и классификации объектов, таких как алгоритмы внимания в YOLOv8, что повышает точность и эффективность распознавания морских судов в сложных условиях.",
+    "related_terms": [
+      "машинное обучение",
+      "нейронные сети",
+      "алгоритмы внимания",
+      "обнаружение объектов",
+      "автономные системы"
+    ],
+    "examples": [
+      "Оптимизация параметров модели YOLOv8 для повышения точности обнаружения судов",
+      "Использование алгоритмов оптимизации для настройки систем автономного управления MASS"
+    ],
+    "papers": [
+      {
+        "file": "paper_0014_cro.md",
+        "title": "Effectiveness of Attention Mechanisms in YOLOv8 for Maritime Vessel Detection",
+        "doi": "\"10.3390/jmse14050433\""
+      }
+    ],
+    "created_at": "2026-04-21T03:56:47.725152",
+    "updated_at": "2026-04-21T03:56:47.725167"
+  },
+  "Testing": {
+    "tag": "Testing",
+    "definition_ru": "Тестирование — процесс проверки и оценки работы систем и компонентов автономных надводных судов для обеспечения их надежности и безопасности. Включает в себя проверку алгоритмов, сенсоров и программного обеспечения в различных условиях.",
+    "definition_en": "Testing is the process of verifying and evaluating the performance of systems and components of autonomous surface vessels to ensure their reliability and safety. It includes checking algorithms, sensors, and software under various conditions.",
+    "context": "В области MASS тестирование применяется для оценки эффективности алгоритмов обнаружения объектов, таких как системы компьютерного зрения на базе YOLOv8, а также для проверки взаимодействия различных подсистем судна в реальных и симулированных морских условиях. Это позволяет выявлять и устранять ошибки до внедрения в эксплуатацию.",
+    "related_terms": [
+      "автономность",
+      "детекция объектов",
+      "алгоритмы машинного обучения",
+      "сенсоры",
+      "верификация",
+      "валидация"
+    ],
+    "examples": [
+      "Тестирование модели YOLOv8 для обнаружения морских судов в условиях различной освещенности.",
+      "Полевое тестирование автономного судна для проверки работы навигационных систем."
+    ],
+    "papers": [
+      {
+        "file": "paper_0014_cro.md",
+        "title": "Effectiveness of Attention Mechanisms in YOLOv8 for Maritime Vessel Detection",
+        "doi": "\"10.3390/jmse14050433\""
+      }
+    ],
+    "created_at": "2026-04-21T03:56:54.155083",
+    "updated_at": "2026-04-21T03:56:54.155094"
+  },
+  "Sensor Fusion": {
+    "tag": "Sensor Fusion",
+    "definition_ru": "Sensor Fusion — это процесс объединения данных с нескольких сенсоров для получения более точной и надежной информации о внешней среде. Он позволяет компенсировать ограничения отдельных датчиков и улучшать качество восприятия.",
+    "definition_en": "Sensor Fusion is the process of combining data from multiple sensors to obtain more accurate and reliable information about the environment. It helps to compensate for individual sensor limitations and enhances perception quality.",
+    "context": "В системах автономных морских надводных судов Sensor Fusion используется для интеграции данных с радаров, лидаров, камер и других сенсоров, обеспечивая надежное обнаружение и классификацию объектов, а также повышение безопасности навигации. Это критически важно для принятия решений в реальном времени в сложных морских условиях.",
+    "related_terms": [
+      "радар",
+      "лидар",
+      "автономная навигация",
+      "обработка данных",
+      "мультисенсорная интеграция"
+    ],
+    "examples": [
+      "Объединение данных радаров и лидаров для точного определения положения других судов",
+      "Использование Sensor Fusion для улучшения обнаружения препятствий в условиях плохой видимости"
+    ],
+    "papers": [
+      {
+        "file": "paper_0016_cro.md",
+        "title": "Maritime Autonomous Surface Ships: Architecture for Autonomous Navigation Systems",
+        "doi": "\"10.3390/jmse13010122\""
+      }
+    ],
+    "created_at": "2026-04-21T03:57:03.852473",
+    "updated_at": "2026-04-21T03:57:03.852483"
+  }
+}
